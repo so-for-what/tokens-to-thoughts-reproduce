@@ -364,6 +364,25 @@ T+120min  全量分析完成 → 出图 → 对比论文
     </div>
   </div>
 
+  <!-- ====== 文件说明 ====== -->
+  <div class="diagram-container" style="margin-top:2rem;">
+    <h2 style="font-size:1rem;margin-bottom:1rem;">📁 文件说明</h2>
+    <table>
+      <thead>
+        <tr><th>文件</th><th>谁用</th><th>一句话</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>human_concepts.csv</td><td>🧑🧑🧑</td><td>论文官方数据集（1105 items），全员共用</td></tr>
+        <tr><td>extract.py</td><td>🧑A🧑B</td><td>python extract.py --model bert-base — 从 HF 模型提 embedding</td></tr>
+        <tr><td>extract_static.py</td><td>🧑C</td><td>python extract_static.py --method all — Word2Vec/GloVe，CPU 秒出</td></tr>
+        <tr><td>analysis.py</td><td>🧑A🧑C</td><td>python analysis.py — RQ1+RQ2+RQ3 分析出图</td></tr>
+        <tr><td>utils.py</td><td>🧑A🧑C</td><td>ℒ 计算 / k-means / AMI / Spearman — 工具箱</td></tr>
+        <tr><td>requirements.txt</td><td>🧑🧑🧑</td><td>pip install -r requirements.txt — 一次性装依赖</td></tr>
+        <tr><td>pipeline.html</td><td>🧑🧑🧑</td><td>可视化管线图，浏览器打开</td></tr>
+      </tbody>
+    </table>
+  </div>
+
   <p class="footer">Shani et al. (2025) · Reproduction Pipeline v2 · Updated 2026-06-06</p>
 
 </div>

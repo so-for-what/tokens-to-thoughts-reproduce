@@ -136,44 +136,17 @@ cosine(E(item), E(category_name)) → Spearman ρ vs human_typicality
 
 ---
 
-## 📁 代码结构
+## 📁 文件说明
 
-```
-tokens-to-thoughts-reproduce/
-├── human_concepts.csv          # 数据集（已就绪）
-├── extract.py                  # [🧑A写] 模型名参数化，通用
-├── analysis.py                 # [🧑A写] RQ1+RQ2+RQ3 统一入口
-├── utils.py                    # [🧑A写] ℒ计算、聚类、指标
-├── models_embeddings/          # 全员产出（.npy + metadata.json）
-│   ├── bert-large-uncased.npy
-│   └── ...
-├── results/                    # 出图、出表
-│   ├── rq1_ami_scatter.png
-│   ├── rq2_spearman_bar.png
-│   ├── rq3_L_curve.png
-│   └── summary_table.csv
-├── pipeline.html               # 可视化管线（本地浏览器打开）
-└── .gitignore
-```
-
-### Embedding 格式规范
-
-```python
-# models_embeddings/{model_name}.npy
-# shape: (1105, hidden_dim)
-# 行序 = human_concepts.csv 行序
-
-# {model_name}_metadata.json
-{
-  "model": "bert-large-uncased",
-  "type": "encoder",
-  "num_layers": 24,
-  "dim": 1024,
-  "prompt": "This is a {word}. ",
-  "pooling": "avg",
-  "subdatasets": ["Rosch1973", "Rosch1975", "McCloskey1978"]
-}
-```
+| 文件 | 谁用 | 一句话 |
+|:-----|:----|:-------|
+| `human_concepts.csv` | 🧑🧑🧑 | 论文官方数据集（1105 items），全员共用 |
+| `extract.py` | 🧑A🧑B | `python extract.py --model bert-base` — 从 HF 模型提 embedding |
+| `extract_static.py` | 🧑C | `python extract_static.py --method all` — Word2Vec/GloVe，CPU 秒出 |
+| `analysis.py` | 🧑A🧑C | `python analysis.py` — RQ1+RQ2+RQ3 分析出图 |
+| `utils.py` | 🧑A🧑C | ℒ计算 / k-means / AMI / Spearman — analysis.py 调用的工具箱 |
+| `requirements.txt` | 🧑🧑🧑 | `pip install -r requirements.txt` — 一次性装依赖 |
+| `pipeline.html` | 🧑🧑🧑 | 可视化管线图，浏览器打开 |
 
 ---
 
