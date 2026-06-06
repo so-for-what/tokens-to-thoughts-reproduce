@@ -1,0 +1,10 @@
+# From Tokens to Thoughts — Reproduction
+torch>=2.0.0
+transformers>=4.30.0
+numpy>=1.22
+pandas>=1.4
+scikit-learn>=1.0
+scipy>=1.7
+matplotlib>=3.5
+gensim>=4.3          # Word2Vec / GloVe
+sentence-transformers>=2.2  # 备用

@@ -66,37 +66,37 @@
 |:--|:---------:|:---:|:---:|
 | **GPU** | ✅ RTX 4060 | ✅ RTX 4060 | ❌ 无 GPU |
 | **学校平台** | ✅ USTC 107 | ❌ | ❌ |
-| **角色** | 主力 | 副手 | 辅助 |
+| **角色** | 主力（代码+学校+少量本地） | 副手（多数本地模型） | 辅助（分析+做图+验证） |
 
-### 🧑A — 主力（GPU + 学校平台, ~2h）
+### 🧑A — 主力（~80min + 排队）
 
-| 承担 | 内容 | 时间 |
+| 任务 | 模型 | 时间 |
 |:----|:----|:---:|
-| 📝 写代码 | extract.py + analysis.py + utils.py，push GitHub | 一次性 |
-| 🖥 本地 4060 | BERT/RoBERTa/DeBERTa/GPT-2/Qwen0.5B/1.5B/Llama1B/Phi-2 等 14 个 | ~30min |
-| 🏫 学校 A100 | Llama-8B/70B · Qwen-14B/32B/72B · DeepSeek-14B/32B · Gemma-9B · OLMo 57ckpt | ~60min+排队 |
-| 📊 汇总分析 | 收齐 🧑B🧑C 的 .npy → RQ1+RQ2+RQ3 → 出图 | ~10min |
+| 📝 写代码 | extract/analysis/utils + push GitHub | 一次性 |
+| 🖥 本地 4060（仅核心 Encoder） | BERT-base/large · RoBERTa · DeBERTa · GPT-2 | ~5min |
+| 🏫 学校 A100（大模型） | Llama-8B/70B · Qwen-14B/32B/72B · DeepSeek-14B/32B · Gemma-9B | ~60min+排队 |
+| 🏫 OLMo 57 checkpoint | 训练动态分析 | ~60min |
+| 📊 汇总分析 | 收齐全部 .npy → RQ1+RQ2+RQ3 → 出图 | ~10min |
 
 ### 🧑B — 副手（有 GPU, ~30min）
 
 | 模型 | 环境 |
 |:----|:----:|
-| Gemma-2-2B · Qwen2.5-4B | 4060 |
-| Phi-4-mini · DeepSeek-Distill-7B | 学校（🧑A 提交） |
-| OLMo-7B（6 ckpt 子集） | 学校（🧑A 提交） |
+| GPT-2-medium · Qwen2.5-0.5B/1.5B | RTX 4060 |
+| Llama-3.2-1B · Phi-2 · Gemma-2-2B · Qwen2.5-4B | RTX 4060 |
+| Phi-4-mini · DeepSeek-Distill-7B · OLMo-6ckpt | 学校（🧑A 提交） |
 
-产出 .npy → 交给 🧑A 汇总。如果 A 的 4060 来不及，可以分担部分小模型。
+产出 .npy 交 🧑A 汇总。
 
 ### 🧑C — 辅助（无 GPU, 全程参与）
 
-| 能做 | 说明 |
-|:----|:-----|
-| 🟢 Word2Vec · GloVe | CPU 秒出，作为基线 |
-| 🟢 分析代码调试 | 协助 🧑A 写 / 验证 analysis.py |
-| 🟢 跑分析出图 | 阶段③ 全部 CPU 运算，拿到 .npy 就能跑 |
-| 🟢 OLMo 训练动态 | 非 GPU 密集型 |
-| 🟢 数值验证 | 复现结果 vs 论文结果对比 |
-| 🟢 图表设计 | 配色 / 排版 / 标注 |
+| 能做 | 命令 | 说明 |
+|:----|:----|:-----|
+| 🟢 Word2Vec + GloVe | `python extract_static.py --method all` | CPU 秒出 |
+| 🟢 写分析代码 + 调试 | 协助 🧑A 验证 analysis.py | 等第一批 .npy 出来 |
+| 🟢 跑分析出图 | `python analysis.py` | 全部 CPU，拿到 .npy 就能跑 |
+| 🟢 数值验证 | 对比论文结果 vs 复现结果 | — |
+| 🟢 图表润色 | 配色/排版/标注 | — |
 
 ---
 
