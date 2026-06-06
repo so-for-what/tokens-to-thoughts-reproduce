@@ -147,6 +147,47 @@ cosine(E(item), E(category_name)) → Spearman ρ vs human_typicality
 | `utils.py` | 🧑A🧑C | ℒ计算 / k-means / AMI / Spearman — analysis.py 调用的工具箱 |
 | `requirements.txt` | 🧑🧑🧑 | `pip install -r requirements.txt` — 一次性装依赖 |
 | `pipeline.html` | 🧑🧑🧑 | 可视化管线图，浏览器打开 |
+| `sbatch/extract.sbatch` | 🧑A | 学校平台提交脚本（5 个中大型模型） |
+| `sbatch/extract-large.sbatch` | 🧑A | 学校平台提交脚本（70B/72B 模型） |
+
+|---
+
+## 🏫 USTC 107 平台提交指南
+
+如果你有 USTC 107 平台权限，sbatch 脚本已准备好：
+
+| 脚本 | 用途 |
+|:-----|:-----|
+| `sbatch/extract.sbatch` | 提取 5 个中大型模型（Llama-8B · Qwen-14B/32B · Gemma-9B · DeepSeek-14B），~4h |
+| `sbatch/extract-large.sbatch` | 单独提取 70B/72B 模型，需更多内存 |
+
+**登陆后步骤：**
+
+```bash
+# 1. 克隆仓库
+git clone https://github.com/so-for-what/tokens-to-thoughts-reproduce.git
+cd tokens-to-thoughts-reproduce
+
+# 2. 装 conda 环境（一次性）
+set +u
+source ~/miniconda3/etc/profile.d/conda.sh
+conda create -n ttt python=3.11 -y
+conda activate ttt
+conda tos accept
+CONDA_OVERRIDE_CUDA="12.4" conda install pytorch torchvision torchaudio pytorch-cuda=12.4 -c pytorch -c nvidia -y
+pip install transformers datasets scikit-learn numpy scipy sentencepiece
+
+# 3. 提交作业
+sbatch sbatch/extract.sbatch
+
+# 4. 查看状态
+squeue -u $USER
+cat logs/extract-*.out   # 看输出
+cat logs/extract-*.err   # 看错误
+```
+
+> ⚠️ 学校平台**不支持 SSH/SFTP**，只能用网页文件管理器传文件。
+> 默认 QOS 限制：4 CPU / 1 GPU / 4GB 内存 / 4 小时。70B/72B 需单独提高内存限制。
 
 ---
 
