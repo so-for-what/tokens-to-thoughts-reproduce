@@ -1,0 +1,1106 @@
+item,category,typicality,subdataset
+Dog,Animal,10,McCloskey1978
+Horse,Animal,9.83,McCloskey1978
+Cow,Animal,9.75,McCloskey1978
+Sparrow,Animal,7.5,McCloskey1978
+Cobra,Animal,6.75,McCloskey1978
+Trout,Animal,6.66,McCloskey1978
+Lizard,Animal,6.5,McCloskey1978
+Unicorn,Animal,6.14,McCloskey1978
+Lobster,Animal,6.13,McCloskey1978
+Jellyfish,Animal,5.92,McCloskey1978
+Woman,Animal,5.54,McCloskey1978
+Worm,Animal,5.3,McCloskey1978
+Tadpole,Animal,5.21,McCloskey1978
+Spider,Animal,5.16,McCloskey1978
+Mosquito,Animal,4.92,McCloskey1978
+Amoeba,Animal,4.21,McCloskey1978
+Poet,Animal,4.04,McCloskey1978
+Sea Anemone,Animal,3.92,McCloskey1978
+Hydra,Animal,3.77,McCloskey1978
+Euglena,Animal,3.6,McCloskey1978
+Sponge,Animal,3.58,McCloskey1978
+Cocoon,Animal,3.46,McCloskey1978
+Egg,Animal,3.38,McCloskey1978
+Bacterium,Animal,3.29,McCloskey1978
+Yeast,Animal,2.5,McCloskey1978
+Fungus,Animal,2.3,McCloskey1978
+Virus,Animal,2.3,McCloskey1978
+Tree,Animal,1.33,McCloskey1978
+Tulip,Animal,1.33,McCloskey1978
+Car,Animal,1,McCloskey1978
+Robin,Bird,10,McCloskey1978
+Sparrow,Bird,9.96,McCloskey1978
+Eagle,Bird,9.58,McCloskey1978
+Owl,Bird,8.71,McCloskey1978
+Partridge,Bird,8.42,McCloskey1978
+Vulture,Bird,8.38,McCloskey1978
+Goose,Bird,8.29,McCloskey1978
+Duck,Bird,8.25,McCloskey1978
+Condor,Bird,8.23,McCloskey1978
+Pheasant,Bird,8.17,McCloskey1978
+Buzzard,Bird,8.08,McCloskey1978
+Rooster,Bird,7.96,McCloskey1978
+Turkey,Bird,7.92,McCloskey1978
+Quail,Bird,7.88,McCloskey1978
+Chicken,Bird,7.75,McCloskey1978
+Albatross,Bird,7.52,McCloskey1978
+Loon,Bird,7.43,McCloskey1978
+Pelican,Bird,7.29,McCloskey1978
+Ostrich,Bird,7.25,McCloskey1978
+Dodo,Bird,7.13,McCloskey1978
+Penguin,Bird,6.96,McCloskey1978
+Pterodactyl,Bird,4.96,McCloskey1978
+Bat,Bird,3.63,McCloskey1978
+Chicken Egg,Bird,2.96,McCloskey1978
+Flying Squirrel,Bird,2.63,McCloskey1978
+Butterfly,Bird,2.38,McCloskey1978
+Vampire,Bird,2.29,McCloskey1978
+Bee,Bird,2.04,McCloskey1978
+Locust,Bird,1.83,McCloskey1978
+Saw,Carpenter's Tool,9.83,McCloskey1978
+Sandpaper,Carpenter's Tool,8.54,McCloskey1978
+Nails,Carpenter's Tool,8.46,McCloskey1978
+Workbench,Carpenter's Tool,8.13,McCloskey1978
+Vise,Carpenter's Tool,7.88,McCloskey1978
+Varnish,Carpenter's Tool,5.71,McCloskey1978
+Soldering Iron,Carpenter's Tool,5.5,McCloskey1978
+Crowbar,Carpenter's Tool,5.08,McCloskey1978
+Sledge Hammer,Carpenter's Tool,4.74,McCloskey1978
+Calculator,Carpenter's Tool,3.29,McCloskey1978
+Dress,Clothing,9.92,McCloskey1978
+Shirt,Clothing,9.92,McCloskey1978
+Necktie,Clothing,9.04,McCloskey1978
+Socks,Clothing,8.92,McCloskey1978
+Shoes,Clothing,8.79,McCloskey1978
+Cuff Links,Clothing,6.79,McCloskey1978
+Buttons,Clothing,6.17,McCloskey1978
+Bracelet,Clothing,5.83,McCloskey1978
+Necklace,Clothing,5.79,McCloskey1978
+Handkerchief,Clothing,5.71,McCloskey1978
+Wig,Clothing,5.33,McCloskey1978
+Watch,Clothing,5.25,McCloskey1978
+Handbag,Clothing,4.96,McCloskey1978
+Eyeglasses,Clothing,4.83,McCloskey1978
+Cane,Clothing,4.67,McCloskey1978
+Corsage,Clothing,4.29,McCloskey1978
+Wallet,Clothing,4.08,McCloskey1978
+Makeup,Clothing,3.96,McCloskey1978
+Medal,Clothing,3.96,McCloskey1978
+Umbrella,Clothing,3.83,McCloskey1978
+Fingernail Polish,Clothing,3.67,McCloskey1978
+Contact Lens,Clothing,3.58,McCloskey1978
+Briefcase,Clothing,3.21,McCloskey1978
+Dentures,Clothing,3.08,McCloskey1978
+Suitcase,Clothing,2.92,McCloskey1978
+Beard,Clothing,2.71,McCloskey1978
+Hearing Aid,Clothing,2.67,McCloskey1978
+Hairbrush,Clothing,2.17,McCloskey1978
+Bandaid,Clothing,1.79,McCloskey1978
+Cancer,Disease,9.75,McCloskey1978
+Tuberculosis,Disease,9.67,McCloskey1978
+Measles,Disease,9.25,McCloskey1978
+Leprosy,Disease,8.42,McCloskey1978
+Epilepsy,Disease,8.13,McCloskey1978
+Asthma,Disease,8.04,McCloskey1978
+Gangrene,Disease,7.75,McCloskey1978
+Arthritis,Disease,7.67,McCloskey1978
+Heart Attack,Disease,7.08,McCloskey1978
+High Blood Pressure,Disease,6.88,McCloskey1978
+Alcoholism,Disease,6.71,McCloskey1978
+Paralysis,Disease,6.58,McCloskey1978
+Drug Addiction,Disease,6.5,McCloskey1978
+Allergy,Disease,6.29,McCloskey1978
+Stroke,Disease,6.29,McCloskey1978
+Fever,Disease,6.25,McCloskey1978
+Schizophrenia,Disease,6.04,McCloskey1978
+Ulcer,Disease,5.88,McCloskey1978
+Neurosis,Disease,5.75,McCloskey1978
+Tooth Decay,Disease,5.5,McCloskey1978
+Food Poisoning,Disease,5.46,McCloskey1978
+Blindness,Disease,4.71,McCloskey1978
+Dandruff,Disease,4.71,McCloskey1978
+Deafness,Disease,4.71,McCloskey1978
+Depression,Disease,4.04,McCloskey1978
+Nearsightedness,Disease,4.04,McCloskey1978
+Friendliness,Disease,1.17,McCloskey1978
+Happiness,Disease,1.17,McCloskey1978
+Trout,Fish,9.91,McCloskey1978
+Salmon,Fish,9.75,McCloskey1978
+Cod,Fish,9.63,McCloskey1978
+Flounder,Fish,9.58,McCloskey1978
+Tuna,Fish,9.5,McCloskey1978
+Shark,Fish,8.25,McCloskey1978
+Eel,Fish,6.83,McCloskey1978
+Squid,Fish,6.3,McCloskey1978
+Shrimp,Fish,6.17,McCloskey1978
+Stingray,Fish,6.09,McCloskey1978
+Jellyfish,Fish,5.75,McCloskey1978
+Lobster,Fish,5.71,McCloskey1978
+Whale,Fish,5.71,McCloskey1978
+Octopus,Fish,5.66,McCloskey1978
+Porpoise,Fish,5.63,McCloskey1978
+Starfish,Fish,5.58,McCloskey1978
+Seal,Fish,5.48,McCloskey1978
+Lamprey,Fish,5.47,McCloskey1978
+Clam,Fish,5.25,McCloskey1978
+Sea Horse,Fish,5.09,McCloskey1978
+Crab,Fish,4.95,McCloskey1978
+Tadpole,Fish,4.87,McCloskey1978
+Oyster,Fish,4.83,McCloskey1978
+Sea Cow,Fish,4.57,McCloskey1978
+Salamander,Fish,4.13,McCloskey1978
+Sea Anemone,Fish,3.96,McCloskey1978
+Sponge,Fish,3.45,McCloskey1978
+Plankton,Fish,3.12,McCloskey1978
+Alligator,Fish,2.71,McCloskey1978
+Otter,Fish,2.7,McCloskey1978
+Apple,Fruit,9.92,McCloskey1978
+Banana,Fruit,9.58,McCloskey1978
+Pineapple,Fruit,9,McCloskey1978
+Strawberry,Fruit,8.96,McCloskey1978
+Canteloupe,Fruit,8.25,McCloskey1978
+Mango,Fruit,8.13,McCloskey1978
+Watermelon,Fruit,7.88,McCloskey1978
+Papaya,Fruit,7.64,McCloskey1978
+Fig,Fruit,7.42,McCloskey1978
+Cranberry,Fruit,7.38,McCloskey1978
+Raisin,Fruit,7.25,McCloskey1978
+Pomegranate,Fruit,7.05,McCloskey1978
+Coconut,Fruit,6.83,McCloskey1978
+Avocado,Fruit,5.58,McCloskey1978
+Orange Juice,Fruit,5.58,McCloskey1978
+Pumpkin,Fruit,5.42,McCloskey1978
+Tomato,Fruit,5.17,McCloskey1978
+Olive,Fruit,4.04,McCloskey1978
+Acorn,Fruit,3.79,McCloskey1978
+Cucumber,Fruit,3.42,McCloskey1978
+Squash,Fruit,3.38,McCloskey1978
+Eggplant,Fruit,3.25,McCloskey1978
+Sweet Potato,Fruit,3.25,McCloskey1978
+Beet,Fruit,3.17,McCloskey1978
+Sunflower Seed,Fruit,3,McCloskey1978
+Peanut,Fruit,2.92,McCloskey1978
+Carrot,Fruit,2.88,McCloskey1978
+Onion,Fruit,2.88,McCloskey1978
+Corn,Fruit,2.75,McCloskey1978
+Chicken,Fruit,1.04,McCloskey1978
+Chair,Furniture,9.95,McCloskey1978
+Table,Furniture,9.83,McCloskey1978
+Bed,Furniture,9.58,McCloskey1978
+Shelf,Furniture,6.41,McCloskey1978
+Rug,Furniture,6.25,McCloskey1978
+Lampshade,Furniture,5.7,McCloskey1978
+Sewing Machine,Furniture,5.32,McCloskey1978
+Stove,Furniture,5.28,McCloskey1978
+Refrigerator,Furniture,5.07,McCloskey1978
+Curtains,Furniture,4.78,McCloskey1978
+Waste Basket,Furniture,4.7,McCloskey1978
+Bookends,Furniture,4.53,McCloskey1978
+Ironing Board,Furniture,4.32,McCloskey1978
+Candlestick,Furniture,4.2,McCloskey1978
+Pillow,Furniture,4.12,McCloskey1978
+Potted Plant,Furniture,3.91,McCloskey1978
+Electric Fan,Furniture,3.78,McCloskey1978
+Telephone,Furniture,3.62,McCloskey1978
+Ashtray,Furniture,3.45,McCloskey1978
+Blackboard,Furniture,3.25,McCloskey1978
+Door,Furniture,2.87,McCloskey1978
+Window,Furniture,2.53,McCloskey1978
+Ceiling,Furniture,2.03,McCloskey1978
+Fence,Furniture,1.87,McCloskey1978
+Fly,Insect,9.79,McCloskey1978
+Mosquito,Insect,9.79,McCloskey1978
+Ant,Insect,9.42,McCloskey1978
+Wasp,Insect,9.21,McCloskey1978
+Beetle,Insect,8.96,McCloskey1978
+Bee,Insect,8.88,McCloskey1978
+Flea,Insect,8.83,McCloskey1978
+Moth,Insect,8.71,McCloskey1978
+Locust,Insect,8.63,McCloskey1978
+Firefly,Insect,8.58,McCloskey1978
+Grasshopper,Insect,8.5,McCloskey1978
+Termite,Insect,8.38,McCloskey1978
+Butterfly,Insect,8.13,McCloskey1978
+Caterpillar,Insect,7.63,McCloskey1978
+Centipede,Insect,7.63,McCloskey1978
+Millipede,Insect,7.5,McCloskey1978
+Spider,Insect,7.21,McCloskey1978
+Louse,Insect,6.3,McCloskey1978
+Tarantula,Insect,6.26,McCloskey1978
+Silkworm,Insect,6.21,McCloskey1978
+Scorpion,Insect,5.33,McCloskey1978
+Leech,Insect,4.92,McCloskey1978
+Worm,Insect,4.79,McCloskey1978
+Bacterium,Insect,2.88,McCloskey1978
+Amoeba,Insect,2.46,McCloskey1978
+Salamander,Insect,2.33,McCloskey1978
+Sea Horse,Insect,2.25,McCloskey1978
+Bat,Insect,2.04,McCloskey1978
+Mouse,Insect,1.71,McCloskey1978
+Dog,Insect,1.33,McCloskey1978
+Fork,Kitchen Utensil,9.42,McCloskey1978
+Spatula,Kitchen Utensil,9.38,McCloskey1978
+Pan,Kitchen Utensil,9.25,McCloskey1978
+Can Opener,Kitchen Utensil,8.58,McCloskey1978
+Pot Holder,Kitchen Utensil,8.54,McCloskey1978
+Toaster,Kitchen Utensil,8.25,McCloskey1978
+Blender,Kitchen Utensil,8.21,McCloskey1978
+Plate,Kitchen Utensil,8.13,McCloskey1978
+Stove,Kitchen Utensil,8.04,McCloskey1978
+Refrigerator,Kitchen Utensil,7.38,McCloskey1978
+Hot Plate,Kitchen Utensil,7.33,McCloskey1978
+Pitcher,Kitchen Utensil,7.21,McCloskey1978
+Salt Shaker,Kitchen Utensil,7.13,McCloskey1978
+Dishwasher,Kitchen Utensil,6.92,McCloskey1978
+Garbage Disposal,Kitchen Utensil,6.54,McCloskey1978
+Mop,Kitchen Utensil,6.46,McCloskey1978
+Broom,Kitchen Utensil,6.42,McCloskey1978
+Dustpan,Kitchen Utensil,6.25,McCloskey1978
+Soap,Kitchen Utensil,5.71,McCloskey1978
+Spices,Kitchen Utensil,5.38,McCloskey1978
+Waste Basket,Kitchen Utensil,5.13,McCloskey1978
+Washing Machine,Kitchen Utensil,3.13,McCloskey1978
+Pencil,Kitchen Utensil,2.96,McCloskey1978
+Hammer,Kitchen Utensil,2.71,McCloskey1978
+Television,Kitchen Utensil,1.71,McCloskey1978
+Mountain,Natural Earth Formation,9.75,McCloskey1978
+Volcano,Natural Earth Formation,9.13,McCloskey1978
+Plateau,Natural Earth Formation,9.04,McCloskey1978
+Fault,Natural Earth Formation,8.87,McCloskey1978
+Cliff,Natural Earth Formation,8.5,McCloskey1978
+Island,Natural Earth Formation,8.5,McCloskey1978
+Desert,Natural Earth Formation,8.43,McCloskey1978
+Valley,Natural Earth Formation,8.42,McCloskey1978
+Continent,Natural Earth Formation,8.08,McCloskey1978
+Strait,Natural Earth Formation,8.04,McCloskey1978
+Peninsula,Natural Earth Formation,8,McCloskey1978
+Glacier,Natural Earth Formation,7.42,McCloskey1978
+Waterfall,Natural Earth Formation,7.42,McCloskey1978
+Beach,Natural Earth Formation,7.38,McCloskey1978
+Stalagmite,Natural Earth Formation,7.36,McCloskey1978
+River,Natural Earth Formation,7.33,McCloskey1978
+Reef,Natural Earth Formation,7.25,McCloskey1978
+Geyser,Natural Earth Formation,7.17,McCloskey1978
+Boulder,Natural Earth Formation,7.08,McCloskey1978
+Ocean,Natural Earth Formation,7.08,McCloskey1978
+Stone,Natural Earth Formation,7.04,McCloskey1978
+Iceberg,Natural Earth Formation,6.58,McCloskey1978
+Forest,Natural Earth Formation,6.54,McCloskey1978
+Meadow,Natural Earth Formation,6.54,McCloskey1978
+Sinkhole,Natural Earth Formation,6.06,McCloskey1978
+Tropics,Natural Earth Formation,4.79,McCloskey1978
+Cloud,Natural Earth Formation,4.42,McCloskey1978
+Air,Natural Earth Formation,3.13,McCloskey1978
+House,Natural Earth Formation,1.17,McCloskey1978
+Diamond,Precious Stone,9.96,McCloskey1978
+Emerald,Precious Stone,9.71,McCloskey1978
+Sapphire,Precious Stone,9.29,McCloskey1978
+Opal,Precious Stone,8.42,McCloskey1978
+Jade,Precious Stone,7.79,McCloskey1978
+Topaz,Precious Stone,7.71,McCloskey1978
+Turquoise,Precious Stone,7.58,McCloskey1978
+Pearl,Precious Stone,7.42,McCloskey1978
+Garnet,Precious Stone,7.17,McCloskey1978
+Onyx,Precious Stone,7.13,McCloskey1978
+Aquamarine,Precious Stone,6.19,McCloskey1978
+Cultured Pearl,Precious Stone,6.13,McCloskey1978
+Zircon,Precious Stone,5.8,McCloskey1978
+Industrial Diamond,Precious Stone,5.74,McCloskey1978
+Gold,Precious Stone,5.54,McCloskey1978
+Agate,Precious Stone,5.52,McCloskey1978
+Moon Rock,Precious Stone,5.19,McCloskey1978
+Rhinestone,Precious Stone,4.83,McCloskey1978
+Uranium,Precious Stone,4.79,McCloskey1978
+Quartz,Precious Stone,4.63,McCloskey1978
+Mica,Precious Stone,3.96,McCloskey1978
+Granite,Precious Stone,3.25,McCloskey1978
+Glass,Precious Stone,2.04,McCloskey1978
+Wood,Precious Stone,1.58,McCloskey1978
+Paper,Precious Stone,1.13,McCloskey1978
+Cotton,Precious Stone,1.07,McCloskey1978
+Chemistry,Science,9.95,McCloskey1978
+Biology,Science,9.87,McCloskey1978
+Physics,Science,9.83,McCloskey1978
+Astronomy,Science,9.33,McCloskey1978
+Oceanography,Science,8.87,McCloskey1978
+Medicine,Science,8.62,McCloskey1978
+Anatomy,Science,8.5,McCloskey1978
+Meteorology,Science,8.37,McCloskey1978
+Mineralogy,Science,8.12,McCloskey1978
+Psychology,Science,7.79,McCloskey1978
+Engineering,Science,7.7,McCloskey1978
+Metallurgy,Science,7.62,McCloskey1978
+Dentistry,Science,7.12,McCloskey1978
+Nursing,Science,6.7,McCloskey1978
+Pharmacy,Science,6.66,McCloskey1978
+Nutrition,Science,6.62,McCloskey1978
+Archaeology,Science,6.5,McCloskey1978
+Anthropology,Science,6.41,McCloskey1978
+Geometry,Science,6.29,McCloskey1978
+Agriculture,Science,6.28,McCloskey1978
+Criminology,Science,6.16,McCloskey1978
+Economics,Science,6.04,McCloskey1978
+Geography,Science,5.66,McCloskey1978
+Architecture,Science,5.16,McCloskey1978
+Sociology,Science,5,McCloskey1978
+Linguistics,Science,4.83,McCloskey1978
+Politics,Science,4,McCloskey1978
+Philosophy,Science,3.79,McCloskey1978
+History,Science,3.54,McCloskey1978
+Advertising,Science,3.12,McCloskey1978
+Ocean Liner,Ship,9.92,McCloskey1978
+Tanker,Ship,9.13,McCloskey1978
+Aircraft Carrier,Ship,9.08,McCloskey1978
+Coast Guard Cutter,Ship,8.58,McCloskey1978
+Tugboat,Ship,7.71,McCloskey1978
+Trawler,Ship,7.58,McCloskey1978
+Sailboat,Ship,7.54,McCloskey1978
+Submarine,Ship,7.38,McCloskey1978
+Riverboat,Ship,6.96,McCloskey1978
+Barge,Ship,6.96,McCloskey1978
+Lifeboat,Ship,6.46,McCloskey1978
+Catamaran,Ship,6.43,McCloskey1978
+Rowboat,Ship,6.42,McCloskey1978
+Houseboat,Ship,6.29,McCloskey1978
+Kayak,Ship,5.79,McCloskey1978
+Canoe,Ship,5.67,McCloskey1978
+Racing Shell,Ship,5.3,McCloskey1978
+Spacecraft,Ship,5.29,McCloskey1978
+Sampan,Ship,5.27,McCloskey1978
+Raft,Ship,5,McCloskey1978
+Hovercraft,Ship,4.8,McCloskey1978
+Gondola,Ship,4.63,McCloskey1978
+Toy Boat,Ship,4.58,McCloskey1978
+Surfboard,Ship,2.96,McCloskey1978
+Buoy,Ship,2.75,McCloskey1978
+Life Jacket,Ship,2.67,McCloskey1978
+Torpedo,Ship,2.3,McCloskey1978
+Driftwood,Ship,2.25,McCloskey1978
+Football,Sport,9.71,McCloskey1978
+Swimming,Sport,9.58,McCloskey1978
+Skiing,Sport,9.08,McCloskey1978
+Gymnastics,Sport,8.88,McCloskey1978
+Ice Skating,Sport,8.33,McCloskey1978
+Pole Vaulting,Sport,8.04,McCloskey1978
+Weightlifting,Sport,7.75,McCloskey1978
+Horseback Riding,Sport,7.67,McCloskey1978
+Surfing,Sport,7.46,McCloskey1978
+Golf,Sport,7.42,McCloskey1978
+Bowling,Sport,7.29,McCloskey1978
+Archery,Sport,7.21,McCloskey1978
+Jogging,Sport,6.88,McCloskey1978
+Fishing,Sport,6.67,McCloskey1978
+Bullfighting,Sport,6.17,McCloskey1978
+Hunting,Sport,6.13,McCloskey1978
+Fox Hunting,Sport,5.96,McCloskey1978
+Croquet,Sport,5.67,McCloskey1978
+Billiards,Sport,5.54,McCloskey1978
+Horseshoes,Sport,5.29,McCloskey1978
+Shuffleboard,Sport,5.29,McCloskey1978
+Dueling,Sport,5,McCloskey1978
+Darts,Sport,4.79,McCloskey1978
+Chess,Sport,4.21,McCloskey1978
+Roulette,Sport,3.74,McCloskey1978
+Writing,Sport,1.54,McCloskey1978
+Watching Television,Sport,1.46,McCloskey1978
+Carrot,Vegetable,9.29,McCloskey1978
+Celery,Vegetable,9.13,McCloskey1978
+Lettuce,Vegetable,9,McCloskey1978
+Corn,Vegetable,8.83,McCloskey1978
+Radish,Vegetable,8.46,McCloskey1978
+Onion,Vegetable,8.38,McCloskey1978
+Turnip,Vegetable,8.33,McCloskey1978
+Eggplant,Vegetable,8.29,McCloskey1978
+Artichoke,Vegetable,8.21,McCloskey1978
+Watercress,Vegetable,7.76,McCloskey1978
+Parsley,Vegetable,7.63,McCloskey1978
+Potato,Vegetable,7.54,McCloskey1978
+Yam,Vegetable,7.22,McCloskey1978
+Tomato,Vegetable,6.96,McCloskey1978
+Rhubarb,Vegetable,6.83,McCloskey1978
+Mushroom,Vegetable,6.38,McCloskey1978
+Soybean,Vegetable,6.33,McCloskey1978
+Pickle,Vegetable,5.92,McCloskey1978
+Pumpkin,Vegetable,5.71,McCloskey1978
+Rice,Vegetable,5.46,McCloskey1978
+Sauerkraut,Vegetable,5.13,McCloskey1978
+Olive,Vegetable,4.92,McCloskey1978
+Peanut,Vegetable,4.46,McCloskey1978
+Sugar Cane,Vegetable,4.09,McCloskey1978
+Apple,Vegetable,3.13,McCloskey1978
+Dandelion,Vegetable,3,McCloskey1978
+Raisin,Vegetable,2.67,McCloskey1978
+Noodles,Vegetable,2.42,McCloskey1978
+Bread,Vegetable,2.08,McCloskey1978
+Steak,Vegetable,1.17,McCloskey1978
+Car,Vehicle,10,McCloskey1978
+Bus,Vehicle,9.79,McCloskey1978
+Airplane,Vehicle,8.96,McCloskey1978
+Carriage,Vehicle,7.83,McCloskey1978
+Tractor,Vehicle,7.67,McCloskey1978
+Horse Van,Vehicle,7.27,McCloskey1978
+Wheelchair,Vehicle,6.96,McCloskey1978
+Unicycle,Vehicle,6.88,McCloskey1978
+Blimp,Vehicle,6.79,McCloskey1978
+Canoe,Vehicle,6.79,McCloskey1978
+Raft,Vehicle,6.67,McCloskey1978
+Baby Carriage,Vehicle,6.46,McCloskey1978
+Elevator,Vehicle,6.13,McCloskey1978
+Roller Skate,Vehicle,6,McCloskey1978
+Skateboard,Vehicle,6,McCloskey1978
+Escalator,Vehicle,5.96,McCloskey1978
+Sled,Vehicle,5.79,McCloskey1978
+Pogo Stick,Vehicle,5.08,McCloskey1978
+Surfboard,Vehicle,5.04,McCloskey1978
+Feet,Vehicle,4.83,McCloskey1978
+Conveyor Belt,Vehicle,4.54,McCloskey1978
+Stretcher,Vehicle,4.5,McCloskey1978
+Parachute,Vehicle,4.38,McCloskey1978
+Ferris Wheel,Vehicle,3.71,McCloskey1978
+Shoes,Vehicle,2.67,McCloskey1978
+Cannon,Vehicle,1.96,McCloskey1978
+Table,Vehicle,1.25,McCloskey1978
+Apartment,Vehicle,1.13,McCloskey1978
+Rain,Weather Phenomenon,9.71,McCloskey1978
+Thunder,Weather Phenomenon,9.38,McCloskey1978
+Wind,Weather Phenomenon,9.29,McCloskey1978
+Clear Sky,Weather Phenomenon,8.96,McCloskey1978
+Hurricane,Weather Phenomenon,8.96,McCloskey1978
+Cloud,Weather Phenomenon,8.67,McCloskey1978
+Rainbow,Weather Phenomenon,8.17,McCloskey1978
+Drought,Weather Phenomenon,7.96,McCloskey1978
+Icicles,Weather Phenomenon,6.96,McCloskey1978
+Dew,Weather Phenomenon,6.58,McCloskey1978
+Tidal Wave,Weather Phenomenon,6.17,McCloskey1978
+Ice Age,Weather Phenomenon,6.08,McCloskey1978
+Autumn,Weather Phenomenon,5.83,McCloskey1978
+Glacier,Weather Phenomenon,5.58,McCloskey1978
+Iceberg,Weather Phenomenon,4.92,McCloskey1978
+Jet Stream,Weather Phenomenon,4.76,McCloskey1978
+Desert,Weather Phenomenon,4.5,McCloskey1978
+Earthquake,Weather Phenomenon,4.38,McCloskey1978
+Avalanche,Weather Phenomenon,4.33,McCloskey1978
+Tides,Weather Phenomenon,4.13,McCloskey1978
+Sunspots,Weather Phenomenon,3.96,McCloskey1978
+Eclipse,Weather Phenomenon,3.83,McCloskey1978
+Sunrise,Weather Phenomenon,3.79,McCloskey1978
+Twilight,Weather Phenomenon,3.67,McCloskey1978
+Air Pollution,Weather Phenomenon,3.33,McCloskey1978
+Waterspout,Weather Phenomenon,3.27,McCloskey1978
+Volcano Eruption,Weather Phenomenon,3.17,McCloskey1978
+Fallout,Weather Phenomenon,3.04,McCloskey1978
+Air Conditioning,Weather Phenomenon,2.63,McCloskey1978
+chair,Furniture,1.04,Rosch1975
+sofa,Furniture,1.04,Rosch1975
+couch,Furniture,1.1,Rosch1975
+table,Furniture,1.1,Rosch1975
+easy chair,Furniture,1.33,Rosch1975
+dresser,Furniture,1.37,Rosch1975
+rocking chair,Furniture,1.37,Rosch1975
+coffee table,Furniture,1.38,Rosch1975
+rocker,Furniture,1.42,Rosch1975
+love seat,Furniture,1.44,Rosch1975
+chest of drawers,Furniture,1.48,Rosch1975
+desk,Furniture,1.54,Rosch1975
+bed,Furniture,1.58,Rosch1975
+bureau,Furniture,1.59,Rosch1975
+davenport,Furniture,1.61,Rosch1975
+end table,Furniture,1.61,Rosch1975
+divan,Furniture,1.7,Rosch1975
+night table,Furniture,1.83,Rosch1975
+chest,Furniture,1.98,Rosch1975
+cedar chest,Furniture,2.11,Rosch1975
+vanity,Furniture,2.13,Rosch1975
+bookcase,Furniture,2.15,Rosch1975
+lounge,Furniture,2.17,Rosch1975
+chaise lounge,Furniture,2.26,Rosch1975
+ottoman,Furniture,2.43,Rosch1975
+footstool,Furniture,2.45,Rosch1975
+cabinet,Furniture,2.49,Rosch1975
+china closet,Furniture,2.59,Rosch1975
+bench,Furniture,2.77,Rosch1975
+buffet,Furniture,2.89,Rosch1975
+lamp,Furniture,2.94,Rosch1975
+stool,Furniture,3.13,Rosch1975
+hassock,Furniture,3.43,Rosch1975
+drawers,Furniture,3.63,Rosch1975
+piano,Furniture,3.64,Rosch1975
+cushion,Furniture,3.7,Rosch1975
+magazine rack,Furniture,4.14,Rosch1975
+hi-fi,Furniture,4.25,Rosch1975
+cupboard,Furniture,4.27,Rosch1975
+stereo,Furniture,4.32,Rosch1975
+mirror,Furniture,4.39,Rosch1975
+television,Furniture,4.41,Rosch1975
+bar,Furniture,4.46,Rosch1975
+shelf,Furniture,4.52,Rosch1975
+rug,Furniture,5,Rosch1975
+pillow,Furniture,5.03,Rosch1975
+wastebasket,Furniture,5.34,Rosch1975
+radio,Furniture,5.37,Rosch1975
+sewing machine,Furniture,5.39,Rosch1975
+stove,Furniture,5.4,Rosch1975
+counter,Furniture,5.44,Rosch1975
+clock,Furniture,5.48,Rosch1975
+drapes,Furniture,5.67,Rosch1975
+refrigerator,Furniture,5.7,Rosch1975
+picture,Furniture,5.75,Rosch1975
+closet,Furniture,5.95,Rosch1975
+vase,Furniture,6.23,Rosch1975
+ashtray,Furniture,6.35,Rosch1975
+fan,Furniture,6.49,Rosch1975
+telephone,Furniture,6.68,Rosch1975
+orange,Fruit,1.07,Rosch1975
+apple,Fruit,1.08,Rosch1975
+banana,Fruit,1.15,Rosch1975
+peach,Fruit,1.17,Rosch1975
+pear,Fruit,1.18,Rosch1975
+apricot,Fruit,1.36,Rosch1975
+tangerine,Fruit,1.36,Rosch1975
+plum,Fruit,1.37,Rosch1975
+grapes,Fruit,1.38,Rosch1975
+nectarine,Fruit,1.52,Rosch1975
+strawberry,Fruit,1.61,Rosch1975
+grapefruit,Fruit,1.77,Rosch1975
+berry,Fruit,1.82,Rosch1975
+cherry,Fruit,1.86,Rosch1975
+pineapple,Fruit,1.19,Rosch1975
+blackberry,Fruit,2.05,Rosch1975
+melon,Fruit,2.09,Rosch1975
+blueberry,Fruit,2.14,Rosch1975
+raspberry,Fruit,2.15,Rosch1975
+lemon,Fruit,2.16,Rosch1975
+black raspberry,Fruit,2.21,Rosch1975
+boysenberry,Fruit,2.38,Rosch1975
+watermelon,Fruit,2.39,Rosch1975
+cantaloupe,Fruit,2.44,Rosch1975
+lime,Fruit,2.45,Rosch1975
+tangelo,Fruit,2.5,Rosch1975
+papaya,Fruit,2.58,Rosch1975
+honeydew,Fruit,2.73,Rosch1975
+fig,Fruit,2.86,Rosch1975
+mango,Fruit,2.88,Rosch1975
+guava,Fruit,3.03,Rosch1975
+pomegranate,Fruit,3.05,Rosch1975
+cranberry,Fruit,3.22,Rosch1975
+passion fruit,Fruit,3.22,Rosch1975
+prunes,Fruit,3.3,Rosch1975
+gooseberry,Fruit,3.33,Rosch1975
+date,Fruit,3.35,Rosch1975
+kumquat,Fruit,3.39,Rosch1975
+raisin,Fruit,3.42,Rosch1975
+muskmelon,Fruit,3.48,Rosch1975
+persimmon,Fruit,3.63,Rosch1975
+pawpaw,Fruit,4.3,Rosch1975
+coconut,Fruit,4.5,Rosch1975
+avocado,Fruit,5.37,Rosch1975
+pumpkin,Fruit,5.39,Rosch1975
+tomato,Fruit,5.58,Rosch1975
+nut,Fruit,6.01,Rosch1975
+gourd,Fruit,6.02,Rosch1975
+olive,Fruit,6.21,Rosch1975
+pickle,Fruit,6.34,Rosch1975
+squash,Fruit,6.55,Rosch1975
+automobile,Vehicle,1.02,Rosch1975
+station wagon,Vehicle,1.14,Rosch1975
+truck,Vehicle,1.17,Rosch1975
+car,Vehicle,1.24,Rosch1975
+bus,Vehicle,1.27,Rosch1975
+taxi,Vehicle,1.27,Rosch1975
+jeep,Vehicle,1.35,Rosch1975
+ambulance,Vehicle,1.62,Rosch1975
+motorcycle,Vehicle,1.65,Rosch1975
+streetcar,Vehicle,1.9,Rosch1975
+van,Vehicle,1.95,Rosch1975
+Honda,Vehicle,2.03,Rosch1975
+cable car,Vehicle,2.11,Rosch1975
+train,Vehicle,2.15,Rosch1975
+trolley (car),Vehicle,2.19,Rosch1975
+bicycle,Vehicle,2.51,Rosch1975
+carriage,Vehicle,2.59,Rosch1975
+airplane,Vehicle,2.64,Rosch1975
+bike,Vehicle,2.73,Rosch1975
+boat,Vehicle,2.75,Rosch1975
+jet,Vehicle,2.79,Rosch1975
+ship,Vehicle,2.82,Rosch1975
+scooter,Vehicle,3.24,Rosch1975
+tractor,Vehicle,3.3,Rosch1975
+wagon,Vehicle,3.31,Rosch1975
+subway,Vehicle,3.32,Rosch1975
+trailer,Vehicle,3.5,Rosch1975
+cart,Vehicle,3.55,Rosch1975
+wheelchair,Vehicle,3.68,Rosch1975
+yacht,Vehicle,3.76,Rosch1975
+tank,Vehicle,3.84,Rosch1975
+go-cart,Vehicle,3.85,Rosch1975
+rowboat,Vehicle,3.92,Rosch1975
+dogsled,Vehicle,3.95,Rosch1975
+tricycle,Vehicle,4,Rosch1975
+canoe,Vehicle,4.01,Rosch1975
+raft,Vehicle,4.37,Rosch1975
+submarine,Vehicle,4.51,Rosch1975
+sled,Vehicle,4.61,Rosch1975
+horse,Vehicle,4.63,Rosch1975
+rocket,Vehicle,4.74,Rosch1975
+blimp,Vehicle,4.81,Rosch1975
+skates,Vehicle,4.99,Rosch1975
+camel,Vehicle,5.22,Rosch1975
+feet,Vehicle,5.34,Rosch1975
+skis,Vehicle,5.4,Rosch1975
+skateboard,Vehicle,5.54,Rosch1975
+wheelbarrow,Vehicle,5.72,Rosch1975
+surfboard,Vehicle,5.78,Rosch1975
+elevator,Vehicle,5.9,Rosch1975
+gun,Weapon,1.03,Rosch1975
+pistol,Weapon,1.07,Rosch1975
+revolver,Weapon,1.09,Rosch1975
+machine gun,Weapon,1.16,Rosch1975
+rifle,Weapon,1.17,Rosch1975
+switchblade,Weapon,1.35,Rosch1975
+knife,Weapon,1.4,Rosch1975
+dagger,Weapon,1.41,Rosch1975
+shotgun,Weapon,1.46,Rosch1975
+sword,Weapon,1.47,Rosch1975
+bomb,Weapon,1.61,Rosch1975
+hand grenade,Weapon,1.61,Rosch1975
+A-bomb,Weapon,1.69,Rosch1975
+bayonet,Weapon,1.69,Rosch1975
+spear,Weapon,1.7,Rosch1975
+bazooka,Weapon,1.76,Rosch1975
+cannon,Weapon,1.96,Rosch1975
+bow and arrow,Weapon,1.98,Rosch1975
+club,Weapon,2.09,Rosch1975
+lance,Weapon,2.14,Rosch1975
+brass knuckles,Weapon,2.38,Rosch1975
+bullet,Weapon,2.44,Rosch1975
+tomahawk,Weapon,2.48,Rosch1975
+mortar,Weapon,2.56,Rosch1975
+arrow,Weapon,2.66,Rosch1975
+blackjack,Weapon,2.68,Rosch1975
+tank,Weapon,2.74,Rosch1975
+teargas,Weapon,2.88,Rosch1975
+missile,Weapon,2.9,Rosch1975
+whip,Weapon,3.11,Rosch1975
+ice pick,Weapon,3.14,Rosch1975
+hatchet,Weapon,3.16,Rosch1975
+slingshot,Weapon,3.29,Rosch1975
+fists,Weapon,3.31,Rosch1975
+axe,Weapon,3.34,Rosch1975
+bow,Weapon,3.44,Rosch1975
+razor,Weapon,3.82,Rosch1975
+razor blade,Weapon,3.83,Rosch1975
+rocket,Weapon,3.9,Rosch1975
+judo,Weapon,3.94,Rosch1975
+stick,Weapon,4.04,Rosch1975
+poison,Weapon,4.07,Rosch1975
+rock,Weapon,4.18,Rosch1975
+stone,Weapon,4.26,Rosch1975
+gas,Weapon,4.31,Rosch1975
+chain,Weapon,4.45,Rosch1975
+scissors,Weapon,4.5,Rosch1975
+bricks,Weapon,4.64,Rosch1975
+pitchfork,Weapon,4.67,Rosch1975
+hammer,Weapon,4.78,Rosch1975
+words,Weapon,4.93,Rosch1975
+hand,Weapon,5.01,Rosch1975
+pipe,Weapon,5.04,Rosch1975
+rope,Weapon,5.08,Rosch1975
+airplane,Weapon,5.09,Rosch1975
+foot,Weapon,5.23,Rosch1975
+car,Weapon,5.31,Rosch1975
+screwdriver,Weapon,5.4,Rosch1975
+glass,Weapon,5.6,Rosch1975
+shoes,Weapon,5.23,Rosch1975
+Pea,Vegetable,1.07,Rosch1975
+Carrot,Vegetable,1.15,Rosch1975
+Green beans,Vegetable,1.18,Rosch1975
+String beans,Vegetable,1.21,Rosch1975
+Spinach,Vegetable,1.22,Rosch1975
+Broccoli,Vegetable,1.28,Rosch1975
+Asparagus,Vegetable,1.41,Rosch1975
+Corn,Vegetable,1.55,Rosch1975
+Cauliflower,Vegetable,1.62,Rosch1975
+Brussels sprouts,Vegetable,1.72,Rosch1975
+Squash,Vegetable,1.83,Rosch1975
+Lettuce,Vegetable,1.85,Rosch1975
+Celery,Vegetable,1.9,Rosch1975
+Cucumber,Vegetable,2.05,Rosch1975
+Beets,Vegetable,2.08,Rosch1975
+Greens,Vegetable,2.18,Rosch1975
+Tomato,Vegetable,2.23,Rosch1975
+Lima beans,Vegetable,2.28,Rosch1975
+Artichokes,Vegetable,2.32,Rosch1975
+Turnip,Vegetable,2.37,Rosch1975
+Eggplant,Vegetable,2.38,Rosch1975
+Romaine,Vegetable,2.44,Rosch1975
+Green peppers,Vegetable,2.49,Rosch1975
+Okra,Vegetable,2.49,Rosch1975
+Radishes,Vegetable,2.51,Rosch1975
+Onions,Vegetable,2.52,Rosch1975
+Bean,Vegetable,2.54,Rosch1975
+Green onion,Vegetable,2.6,Rosch1975
+Potato,Vegetable,2.89,Rosch1975
+Parsnip,Vegetable,2.91,Rosch1975
+Turnip greens,Vegetable,2.95,Rosch1975
+Collard,Vegetable,2.99,Rosch1975
+wax beans,Vegetable,3.02,Rosch1975
+Watercress,Vegetable,3.04,Rosch1975
+Blackeyed peas,Vegetable,3.06,Rosch1975
+Leek,Vegetable,3.15,Rosch1975
+Peppers,Vegetable,3.21,Rosch1975
+Sweet potato,Vegetable,3.27,Rosch1975
+Yams,Vegetable,3.31,Rosch1975
+Parsley,Vegetable,3.32,Rosch1975
+Endive,Vegetable,3.42,Rosch1975
+Rutabaga,Vegetable,3.42,Rosch1975
+Mushroom,Vegetable,3.56,Rosch1975
+Avocado,Vegetable,3.62,Rosch1975
+Rhubarb,Vegetable,3.66,Rosch1975
+Kale,Vegetable,3.67,Rosch1975
+Escrole,Vegetable,3.9,Rosch1975
+Sauerkraut,Vegetable,4.18,Rosch1975
+Pickles,Vegetable,4.57,Rosch1975
+Baked beans,Vegetable,4.73,Rosch1975
+Pumpkin,Vegetable,4.74,Rosch1975
+Seaweed,Vegetable,5.04,Rosch1975
+Garlic,Vegetable,5.07,Rosch1975
+Dandelion,Vegetable,5.2,Rosch1975
+Peanut,Vegetable,5.56,Rosch1975
+Rice,Vegetable,5.59,Rosch1975
+Saw,Carpenter's tool,1.04,Rosch1975
+Hammer,Carpenter's tool,1.34,Rosch1975
+Ruler,Carpenter's tool,1.48,Rosch1975
+Screwdriver,Carpenter's tool,1.56,Rosch1975
+Drill,Carpenter's tool,1.59,Rosch1975
+Nails,Carpenter's tool,1.67,Rosch1975
+Tape measure,Carpenter's tool,1.69,Rosch1975
+Sawhorse,Carpenter's tool,1.77,Rosch1975
+Sandpaper,Carpenter's tool,1.78,Rosch1975
+Sander,Carpenter's tool,1.79,Rosch1975
+Level,Carpenter's tool,1.82,Rosch1975
+Plane,Carpenter's tool,1.91,Rosch1975
+File,Carpenter's tool,2.01,Rosch1975
+Toolbox,Carpenter's tool,2.12,Rosch1975
+T-square,Carpenter's tool,2.22,Rosch1975
+Chisel,Carpenter's tool,2.26,Rosch1975
+Rasp,Carpenter's tool,2.37,Rosch1975
+Pencil,Carpenter's tool,2.39,Rosch1975
+Hacksaw,Carpenter's tool,2.41,Rosch1975
+Square,Carpenter's tool,2.44,Rosch1975
+Bench,Carpenter's tool,2.5,Rosch1975
+Pliers,Carpenter's tool,2.59,Rosch1975
+Wrench,Carpenter's tool,2.6,Rosch1975
+Ladder,Carpenter's tool,2.64,Rosch1975
+Lathe,Carpenter's tool,2.75,Rosch1975
+Vise,Carpenter's tool,2.76,Rosch1975
+Screws,Carpenter's tool,2.77,Rosch1975
+Wood,Carpenter's tool,2.77,Rosch1975
+Wedge,Carpenter's tool,2.8,Rosch1975
+Lumber,Carpenter's tool,2.84,Rosch1975
+Blueprints,Carpenter's tool,2.9,Rosch1975
+Brace,Carpenter's tool,2.92,Rosch1975
+Awl,Carpenter's tool,3.09,Rosch1975
+Crowbar,Carpenter's tool,3.12,Rosch1975
+Hinge,Carpenter's tool,3.12,Rosch1975
+Mitre box,Carpenter's tool,3.23,Rosch1975
+Knife,Carpenter's tool,3.44,Rosch1975
+Chalk,Carpenter's tool,3.5,Rosch1975
+Nuts,Carpenter's tool,3.5,Rosch1975
+Bolts,Carpenter's tool,3.63,Rosch1975
+Plumb line,Carpenter's tool,3.65,Rosch1975
+Brush,Carpenter's tool,3.74,Rosch1975
+Sledge hammer,Carpenter's tool,3.74,Rosch1975
+Glue,Carpenter's tool,3.79,Rosch1975
+Paintbrush,Carpenter's tool,3.81,Rosch1975
+Varnish,Carpenter's tool,3.91,Rosch1975
+Apron,Carpenter's tool,4.06,Rosch1975
+Staples,Carpenter's tool,4.21,Rosch1975
+Extension cord,Carpenter's tool,4.29,Rosch1975
+Soldering iron,Carpenter's tool,4.39,Rosch1975
+Plaster,Carpenter's tool,4.43,Rosch1975
+Wheelbarrow,Carpenter's tool,4.43,Rosch1975
+Axe,Carpenter's tool,4.53,Rosch1975
+Slide rule,Carpenter's tool,4.57,Rosch1975
+Cement,Carpenter's tool,4.91,Rosch1975
+Anvil,Carpenter's tool,5.1,Rosch1975
+Hatchet,Carpenter's tool,5.15,Rosch1975
+Rags,Carpenter's tool,5.2,Rosch1975
+Scissors,Carpenter's tool,5.36,Rosch1975
+Crane,Carpenter's tool,5.7,Rosch1975
+Robin,Birds,1.02,Rosch1975
+Sparrow,Birds,1.18,Rosch1975
+Bluejay,Birds,1.29,Rosch1975
+Bluebird,Birds,1.31,Rosch1975
+Canary,Birds,1.42,Rosch1975
+Blackbird,Birds,1.43,Rosch1975
+Dove,Birds,1.46,Rosch1975
+Lark,Birds,1.47,Rosch1975
+Swallow,Birds,1.52,Rosch1975
+Parakeet,Birds,1.53,Rosch1975
+Oriole,Birds,1.61,Rosch1975
+Mockingbird,Birds,1.62,Rosch1975
+Redbird,Birds,1.64,Rosch1975
+Wren,Birds,1.64,Rosch1975
+Finch,Birds,1.66,Rosch1975
+Starling,Birds,1.72,Rosch1975
+Cardinal,Birds,1.75,Rosch1975
+Eagle,Birds,1.75,Rosch1975
+Hummingbird,Birds,1.76,Rosch1975
+Seagull,Birds,1.77,Rosch1975
+Woodpecker,Birds,1.78,Rosch1975
+Pigeon,Birds,1.81,Rosch1975
+Thrush,Birds,1.89,Rosch1975
+Falcon,Birds,1.96,Rosch1975
+Crow,Birds,1.97,Rosch1975
+Hawk,Birds,1.99,Rosch1975
+Raven,Birds,2.01,Rosch1975
+Goldfinch,Birds,2.06,Rosch1975
+Parrot,Birds,2.07,Rosch1975
+Sandpiper,Birds,2.4,Rosch1975
+Pheasant,Birds,2.69,Rosch1975
+Catbird,Birds,2.72,Rosch1975
+Crane,Birds,2.77,Rosch1975
+Albatross,Birds,2.8,Rosch1975
+Condor,Birds,2.83,Rosch1975
+Toucan,Birds,2.95,Rosch1975
+Owl,Birds,2.96,Rosch1975
+Pelican,Birds,2.98,Rosch1975
+Geese,Birds,3.03,Rosch1975
+Vulture,Birds,3.06,Rosch1975
+Stork,Birds,3.1,Rosch1975
+Buzzard,Birds,3.14,Rosch1975
+Swan,Birds,3.16,Rosch1975
+Flamingo,Birds,3.17,Rosch1975
+Duck,Birds,3.24,Rosch1975
+Peacock,Birds,3.31,Rosch1975
+Egret,Birds,3.39,Rosch1975
+Chicken,Birds,4.02,Rosch1975
+Turkey,Birds,4.09,Rosch1975
+Ostrich,Birds,4.12,Rosch1975
+Titmouse,Birds,4.35,Rosch1975
+Emu,Birds,4.38,Rosch1975
+Penguin,Birds,4.53,Rosch1975
+Bat,Birds,6.15,Rosch1975
+Football,Sports,1.03,Rosch1975
+Baseball,Sports,1.05,Rosch1975
+Basketball,Sports,1.12,Rosch1975
+Tennis,Sports,1.15,Rosch1975
+Softball,Sports,1.29,Rosch1975
+Canoeing,Sports,1.41,Rosch1975
+Handball,Sports,1.42,Rosch1975
+Rugby,Sports,1.43,Rosch1975
+Hockey,Sports,1.44,Rosch1975
+Ice hockey,Sports,1.45,Rosch1975
+Swimming,Sports,1.53,Rosch1975
+Track,Sports,1.61,Rosch1975
+Boxing,Sports,1.66,Rosch1975
+Volleyball,Sports,1.71,Rosch1975
+Lacrosse,Sports,1.72,Rosch1975
+Skiing,Sports,1.76,Rosch1975
+Golf,Sports,1.77,Rosch1975
+Polo,Sports,1.8,Rosch1975
+Surfing,Sports,1.84,Rosch1975
+Wrestling,Sports,1.87,Rosch1975
+Gymnastics,Sports,1.88,Rosch1975
+Cricket,Sports,1.99,Rosch1975
+Squash,Sports,1.99,Rosch1975
+Badminton,Sports,2.08,Rosch1975
+Racing,Sports,2.08,Rosch1975
+Pole vault,Sports,2.09,Rosch1975
+Fencing,Sports,2.13,Rosch1975
+Bowling,Sports,2.18,Rosch1975
+Water skiing,Sports,2.22,Rosch1975
+Ice skating,Sports,2.29,Rosch1975
+Jai alai,Sports,2.3,Rosch1975
+Skating,Sports,2.39,Rosch1975
+Skindiving,Sports,2.4,Rosch1975
+Sailing,Sports,2.44,Rosch1975
+Diving,Sports,2.5,Rosch1975
+Archery,Sports,2.54,Rosch1975
+Judo,Sports,2.63,Rosch1975
+Car racing,Sports,2.78,Rosch1975
+Ping pong,Sports,2.8,Rosch1975
+Rowing,Sports,2.82,Rosch1975
+Fishing,Sports,2.84,Rosch1975
+Horseback riding,Sports,2.85,Rosch1975
+Running,Sports,3.01,Rosch1975
+Horse racing,Sports,3.18,Rosch1975
+Hiking,Sports,3.5,Rosch1975
+Weight lifting,Sports,3.59,Rosch1975
+Croquet,Sports,3.6,Rosch1975
+Horseshoes,Sports,3.72,Rosch1975
+Boating,Sports,3.75,Rosch1975
+Pool,Sports,3.82,Rosch1975
+Billiards,Sports,3.95,Rosch1975
+Hunting,Sports,4.05,Rosch1975
+Jump rope,Sports,5,Rosch1975
+Camping,Sports,5.07,Rosch1975
+Chess,Sports,5.07,Rosch1975
+Dancing,Sports,5.49,Rosch1975
+Checkers,Sports,5.64,Rosch1975
+Cards,Sports,5.79,Rosch1975
+Sunbathing,Sports,6.75,Rosch1975
+Doll,Toys,1.41,Rosch1975
+Top,Toys,1.48,Rosch1975
+Jack in the box,Toys,1.61,Rosch1975
+Toy soldier,Toys,1.61,Rosch1975
+Yo-yo,Toys,1.62,Rosch1975
+Block,Toys,1.63,Rosch1975
+Marbles,Toys,1.74,Rosch1975
+Rattle,Toys,1.79,Rosch1975
+Stuffed animal,Toys,1.87,Rosch1975
+Water pistol,Toys,1.88,Rosch1975
+Teddy bear,Toys,1.9,Rosch1975
+Rocking horse,Toys,1.91,Rosch1975
+Doll house,Toys,1.95,Rosch1975
+Ball,Toys,1.96,Rosch1975
+Jacks,Toys,2.09,Rosch1975
+Paper dolls,Toys,2.14,Rosch1975
+Erector set,Toys,2.16,Rosch1975
+Hula hoop,Toys,2.16,Rosch1975
+Jump rope,Toys,2.29,Rosch1975
+Pogo stick,Toys,2.44,Rosch1975
+Clay,Toys,2.49,Rosch1975
+Wagon,Toys,2.49,Rosch1975
+Kite,Toys,2.51,Rosch1975
+Train,Toys,2.59,Rosch1975
+Tricycle,Toys,2.61,Rosch1975
+Coloring book,Toys,2.68,Rosch1975
+Crayons,Toys,2.71,Rosch1975
+Truck,Toys,2.78,Rosch1975
+Puzzle,Toys,2.82,Rosch1975
+Fire engine,Toys,2.83,Rosch1975
+Balloon,Toys,3.07,Rosch1975
+Skates,Toys,3.13,Rosch1975
+Baseball,Toys,3.18,Rosch1975
+Drum,Toys,3.23,Rosch1975
+Football,Toys,3.28,Rosch1975
+Game,Toys,3.35,Rosch1975
+Swing,Toys,3.35,Rosch1975
+Boat,Toys,3.36,Rosch1975
+Monopoly,Toys,3.42,Rosch1975
+Sled,Toys,3.43,Rosch1975
+Seesaw,Toys,3.48,Rosch1975
+Stilts,Toys,3.48,Rosch1975
+Checkers,Toys,3.56,Rosch1975
+Bat,Toys,3.62,Rosch1975
+Car,Toys,3.63,Rosch1975
+Airplane,Toys,3.66,Rosch1975
+Bicycle,Toys,3.68,Rosch1975
+Tractor,Toys,3.68,Rosch1975
+Sandbox,Toys,3.71,Rosch1975
+Bike,Toys,3.77,Rosch1975
+Bow and arrow,Toys,4.2,Rosch1975
+Rope,Toys,4.2,Rosch1975
+Dishes,Toys,4.51,Rosch1975
+Cards,Toys,4.56,Rosch1975
+Mitt,Toys,4.77,Rosch1975
+Horse,Toys,4.97,Rosch1975
+Gun,Toys,5.36,Rosch1975
+Animals,Toys,5.39,Rosch1975
+Tennis racket,Toys,5.4,Rosch1975
+Books,Toys,5.91,Rosch1975
+Pants,Clothing,1.12,Rosch1975
+Shirt,Clothing,1.14,Rosch1975
+Dress,Clothing,1.14,Rosch1975
+Skirt,Clothing,1.21,Rosch1975
+Blouse,Clothing,1.27,Rosch1975
+Suit,Clothing,1.45,Rosch1975
+Slacks,Clothing,1.49,Rosch1975
+Jacket,Clothing,1.68,Rosch1975
+Coat,Clothing,1.88,Rosch1975
+Sweater,Clothing,1.89,Rosch1975
+Sweatshirt,Clothing,1.95,Rosch1975
+Underpants,Clothing,2.01,Rosch1975
+Sports jacket,Clothing,2.05,Rosch1975
+Jumper,Clothing,2.08,Rosch1975
+Panties,Clothing,2.08,Rosch1975
+Socks,Clothing,2.13,Rosch1975
+Parka,Clothing,2.19,Rosch1975
+Pajamas,Clothing,2.25,Rosch1975
+Undershirt,Clothing,2.26,Rosch1975
+Overcoat,Clothing,2.29,Rosch1975
+Nightgown,Clothing,2.39,Rosch1975
+Raincoat,Clothing,2.44,Rosch1975
+Bathing suit,Clothing,2.44,Rosch1975
+Bathrobe,Clothing,2.65,Rosch1975
+Slip,Clothing,2.67,Rosch1975
+Bra,Clothing,2.68,Rosch1975
+Shoes,Clothing,2.73,Rosch1975
+Tuxedo,Clothing,2.76,Rosch1975
+Stockings,Clothing,2.79,Rosch1975
+Vest,Clothing,2.81,Rosch1975
+Nylons,Clothing,2.98,Rosch1975
+Cape,Clothing,3.38,Rosch1975
+Boots,Clothing,3.42,Rosch1975
+Sandals,Clothing,3.56,Rosch1975
+Tie,Clothing,3.71,Rosch1975
+Girdle,Clothing,3.72,Rosch1975
+Belt,Clothing,3.93,Rosch1975
+Scarf,Clothing,3.96,Rosch1975
+Mittens,Clothing,3.99,Rosch1975
+Slippers,Clothing,4.08,Rosch1975
+Hat,Clothing,4.2,Rosch1975
+Overshoes,Clothing,4.42,Rosch1975
+Gloves,Clothing,4.53,Rosch1975
+Apron,Clothing,4.57,Rosch1975
+Earmuffs,Clothing,5.04,Rosch1975
+Handkerchief,Clothing,5.87,Rosch1975
+Purse,Clothing,5.92,Rosch1975
+Hairband,Clothing,5.98,Rosch1975
+Ring,Clothing,6.11,Rosch1975
+Earrings,Clothing,6.15,Rosch1975
+Watch,Clothing,6.15,Rosch1975
+Cuff links,Clothing,6.18,Rosch1975
+Necklace,Clothing,6.21,Rosch1975
+Bracelet,Clothing,6.24,Rosch1975
+Cane,Clothing,6.25,Rosch1975
+Apple,Fruit,1.3,Rosch1973
+Plum,Fruit,2.3,Rosch1973
+Pineapple,Fruit,2.3,Rosch1973
+Strawberry,Fruit,2.3,Rosch1973
+Fig,Fruit,4.7,Rosch1973
+Olive,Fruit,6.2,Rosch1973
+Chemistry,Science,1,Rosch1973
+Botany,Science,1.7,Rosch1973
+Geology,Science,2.6,Rosch1973
+Sociology,Science,4.6,Rosch1973
+Anatomy,Science,1.7,Rosch1973
+History,Science,5.9,Rosch1973
+Football,Sport,1.2,Rosch1973
+Hockey,Sport,1.8,Rosch1973
+Wrestling,Sport,3,Rosch1973
+Archery,Sport,3.9,Rosch1973
+Gymnastics,Sport,2.6,Rosch1973
+Weightlifting,Sport,4.7,Rosch1973
+Robin,Bird,1.1,Rosch1973
+Eagle,Bird,1.2,Rosch1973
+Wren,Bird,1.4,Rosch1973
+Chicken,Bird,3.8,Rosch1973
+Ostrich,Bird,3.3,Rosch1973
+Bat,Bird,5.8,Rosch1973
+Car,Vehicle,1,Rosch1973
+Boat,Vehicle,2.7,Rosch1973
+Scooter,Vehicle,2.5,Rosch1973
+Tricycle,Vehicle,3.5,Rosch1973
+Horse,Vehicle,5.9,Rosch1973
+Skis,Vehicle,5.7,Rosch1973
+Murder,Crime,1,Rosch1973
+Assault,Crime,1.4,Rosch1973
+Stealing,Crime,1.3,Rosch1973
+Embezzling,Crime,1.8,Rosch1973
+Blackmail,Crime,1.7,Rosch1973
+Vagrancy,Crime,5.3,Rosch1973
+Cancer,Disease,1.2,Rosch1973
+Measles,Disease,2.8,Rosch1973
+Cold,Disease,4.7,Rosch1973
+Malaria,Disease,1.4,Rosch1973
+Muscular dystrophy,Disease,1.9,Rosch1973
+Rheumatism,Disease,3.5,Rosch1973
+Carrot,Vegetable,1.1,Rosch1973
+Asparagus,Vegetable,1.3,Rosch1973
+Celery,Vegetable,1.7,Rosch1973
+Onion,Vegetable,2.7,Rosch1973
+Parsley,Vegetable,3.8,Rosch1973
+Pickle,Vegetable,4.4,Rosch1973
