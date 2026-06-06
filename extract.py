@@ -84,12 +84,14 @@ def extract_embeddings(model_name, device="cuda"):
         tokenizer.pad_token = tokenizer.eos_token if tokenizer.eos_token else "[PAD]"
 
     config = AutoConfig.from_pretrained(model_name, trust_remote_code=True)
+    config.output_hidden_states = True
+    
+    # Use float32 for compatibility (some models like DeBERTa
+    # fail at forward pass with float16 even if loading succeeds)
     model = AutoModel.from_pretrained(
         model_name,
         config=config,
-        output_hidden_states=True,
         trust_remote_code=True,
-        torch_dtype=torch.float16 if device == "cuda" else torch.float32,
     ).to(device)
     model.eval()
 
@@ -175,7 +177,7 @@ def extract_embeddings(model_name, device="cuda"):
     with open(os.path.join(OUT_DIR, f"{base_name}_metadata.json"), "w") as f:
         json.dump(meta, f, indent=2)
 
-    print(f"  ✅ Saved {base_name}.npy (last layer) + {base_name}_static.npy")
+    print(f"  [OK] Saved {base_name}.npy (last layer) + {base_name}_static.npy")
     return base_name
 
 
@@ -188,9 +190,9 @@ def main():
 
     device = "cuda" if torch.cuda.is_available() and not args.cpu else "cpu"
     if device == "cuda":
-        print(f"🟢 GPU: {torch.cuda.get_device_name(0)}")
+        print(f"GPU: {torch.cuda.get_device_name(0)}")
     else:
-        print(f"🟡 CPU mode")
+        print(f"CPU mode")
 
     # 解析模型清单
     if args.model == "all":
@@ -206,11 +208,11 @@ def main():
         try:
             extract_embeddings(m, device=device)
             elapsed = time.time() - t0
-            print(f"  ⏱ {elapsed:.1f}s")
+            print(f"  [TIME] {elapsed:.1f}s")
         except Exception as e:
-            print(f"  ❌ Failed: {e}")
+            print(f"  [FAIL] {e}")
 
-    print("\n✨ Done!")
+    print("\n[Done]")
 
 
 if __name__ == "__main__":
