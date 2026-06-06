@@ -1,0 +1,11 @@
+{
+  "model": "bert-base-uncased",
+  "short_name": "bert-base-uncased",
+  "type": "encoder",
+  "num_layers": 12,
+  "dim": 768,
+  "num_items": 1105,
+  "prompt": "This is a {word}. ",
+  "pooling": "avg",
+  "device": "cuda"
+}

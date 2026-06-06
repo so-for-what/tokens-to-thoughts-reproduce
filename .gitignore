@@ -2,5 +2,4 @@ build_datasets.py
 categorization_benchmark.csv
 __pycache__/
 *.pyc
-models_embeddings/
 results/

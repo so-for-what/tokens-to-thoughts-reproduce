@@ -1,0 +1,11 @@
+{
+  "model": "roberta-large",
+  "short_name": "roberta-large",
+  "type": "encoder",
+  "num_layers": 24,
+  "dim": 1024,
+  "num_items": 1105,
+  "prompt": "This is a {word}. ",
+  "pooling": "avg",
+  "device": "cuda"
+}
