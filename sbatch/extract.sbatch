@@ -21,7 +21,8 @@ set -u
 
 # ===== 设置 HF 镜像（加速下载）=====
 export HF_ENDPOINT=https://hf-mirror.com
-export HF_TOKEN=hf_QwtFgBggGGhNsPGVnsdFhsobnlbWTHyvJ
+# 如需访问 Llama/Gemma 等需要登录的模型，取消注释下一行并填入你的 HF token
+# export HF_TOKEN=hf_xxxxxxxxxxxx
 
 echo "=== Job started: $(date) ==="
 echo "Host: $(hostname)"
