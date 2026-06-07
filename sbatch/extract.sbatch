@@ -1,11 +1,11 @@
 #!/bin/bash
 #SBATCH -J extract-A_school
 #SBATCH -p Students
-#SBATCH --qos=qos_stu_default
+#SBATCH --qos=qos_stu_long
 #SBATCH --gres=gpu:1
 #SBATCH --cpus-per-task=4
-#SBATCH --mem=4G
-#SBATCH -t 03:50:00
+#SBATCH --mem=8G
+#SBATCH -t 23:00:00
 #SBATCH -o logs/extract-%j.out
 #SBATCH -e logs/extract-%j.err
 
@@ -21,21 +21,27 @@ set -u
 
 # ===== 设置 HF 镜像（加速下载）=====
 export HF_ENDPOINT=https://hf-mirror.com
-# 如需访问 Llama/Gemma 等需要登录的模型，取消注释下一行并填入你的 HF token
-# export HF_TOKEN=hf_xxxxxxxxxxxx
+export HF_TOKEN=__FILL_YOUR_HF_TOKEN_HERE__
 
 echo "=== Job started: $(date) ==="
 echo "Host: $(hostname)"
 echo "GPU: $(nvidia-smi --query-gpu=name --format=csv,noheader 2>/dev/null || echo 'N/A')"
 echo ""
 
-# ===== 提取 A_school 模型 =====
-# 逐一提取，避免 OOM
+# ===== 提取 A_school 模型（从小到大，逐一下载+提取）=====
+# Qwen2.5-14B 已完成，跳过
+
+# 1. 8B 模型（最快）
 python extract.py --model meta-llama/Meta-Llama-3.1-8B
-python extract.py --model Qwen/Qwen2.5-14B
-python extract.py --model Qwen/Qwen2.5-32B
+
+# 2. 9B 模型
 python extract.py --model google/gemma-2-9b
+
+# 3. 14B 模型
 python extract.py --model deepseek-ai/DeepSeek-R1-Distill-Qwen-14B
+
+# 4. 32B 模型（最慢，放最后）
+python extract.py --model Qwen/Qwen2.5-32B
 
 echo "=== A_school extract done ==="
 
