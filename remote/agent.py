@@ -16,7 +16,7 @@ import time
 import sys
 import traceback
 
-RELAY = 'https://laptop-mn6kbpmm.tail39c976.ts.net/hermes'
+RELAY = 'https://laptop-mn6kbpmm.tail39c976.ts.net:8443/hermes'
 LOG = '/tmp/agent_debug.log'
 
 
