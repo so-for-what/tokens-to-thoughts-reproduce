@@ -1,0 +1,11 @@
+{
+  "model": "microsoft/phi-2",
+  "short_name": "phi-2",
+  "type": "decoder",
+  "num_layers": 32,
+  "dim": 2560,
+  "num_items": 1105,
+  "prompt": "This is a {word}. ",
+  "pooling": "avg",
+  "device": "cuda"
+}

@@ -1,0 +1,11 @@
+{
+  "model": "Qwen/Qwen2.5-1.5B",
+  "short_name": "Qwen2.5-1.5B",
+  "type": "decoder",
+  "num_layers": 28,
+  "dim": 1536,
+  "num_items": 1105,
+  "prompt": "This is a {word}. ",
+  "pooling": "avg",
+  "device": "cuda"
+}

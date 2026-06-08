@@ -14,7 +14,7 @@ import argparse, json, os, sys, time
 import numpy as np
 import pandas as pd
 import torch
-from transformers import AutoModel, AutoTokenizer, AutoConfig
+from transformers import AutoModel, AutoTokenizer, AutoConfig, AutoModelForCausalLM
 
 # ── 路径 ────────────────────────────────────────────
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -53,7 +53,7 @@ MODELS = {
         "meta-llama/Llama-3.2-1B",
         "microsoft/phi-2",
         "google/gemma-2-2b",
-        "Qwen/Qwen2.5-4B",
+        "Qwen/Qwen2-7B",
         "deepseek-ai/DeepSeek-R1-Distill-Qwen-7B",
     ],
     "C": [          # 🧑C CPU（秒出）
@@ -62,6 +62,8 @@ MODELS = {
 }
 
 ALL_MODELS = []
+
+# model_path = os.path.join(BASE_DIR, "Qwen2-7B-Instruct")
 for group in MODELS.values():
     ALL_MODELS.extend(group)
 
@@ -80,10 +82,12 @@ def extract_embeddings(model_name, device="cuda"):
 
     # 加载 tokenizer 和模型
     tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
+    # tokenizer = AutoTokenizer.from_pretrained(model_path)
     if tokenizer.pad_token is None:
         tokenizer.pad_token = tokenizer.eos_token if tokenizer.eos_token else "[PAD]"
 
     config = AutoConfig.from_pretrained(model_name, trust_remote_code=True)
+    # config = AutoConfig.from_pretrained(model_path)
     config.output_hidden_states = True
     
     # Use float32 for compatibility (some models like DeBERTa
@@ -93,6 +97,15 @@ def extract_embeddings(model_name, device="cuda"):
         config=config,
         trust_remote_code=True,
     ).to(device)
+    #model = AutoModelForCausalLM.from_pretrained(
+    # model_path,
+    # local_files_only=True,
+    # trust_remote_code=True,
+    # low_cpu_mem_usage=True,
+    # torch_dtype=torch.float16,
+    # )
+    # print(f"  Model loaded. Layers: {config.num_hidden_layers}, Dim: {config.hidden_size}")
+    # model = model.to(device)  # 强制 float32，兼容性更好（某些模型如 DeBERTa 即使加载成功，float16 也会前向失败）
     model.eval()
 
     num_layers = config.num_hidden_layers

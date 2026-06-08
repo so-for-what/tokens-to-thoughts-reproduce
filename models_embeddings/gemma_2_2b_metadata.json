@@ -1,0 +1,11 @@
+{
+  "model": "google/gemma-2-2b",
+  "short_name": "gemma-2-2b",
+  "type": "decoder",
+  "num_layers": 26,
+  "dim": 2304,
+  "num_items": 1105,
+  "prompt": "This is a {word}. ",
+  "pooling": "avg",
+  "device": "cuda"
+}
