@@ -1,0 +1,10 @@
+{
+  "model": "word2vec",
+  "short_name": "word2vec",
+  "type": "classic",
+  "num_layers": 0,
+  "dim": 300,
+  "num_items": 1105,
+  "prompt": "n/a (static)",
+  "pooling": "n/a"
+}
