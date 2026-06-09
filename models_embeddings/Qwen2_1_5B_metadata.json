@@ -1,0 +1,9 @@
+{
+  "model": "Qwen/Qwen2-1.5B",
+  "short_name": "Qwen2_1_5B",
+  "num_layers": 28,
+  "dim": 1536,
+  "num_items": 1105,
+  "dtype": "float32",
+  "device": "cuda"
+}
