@@ -25,23 +25,21 @@ export HF_TOKEN=__FILL_YOUR_HF_TOKEN_HERE__
 
 echo "=== Job started: $(date) ==="
 echo "Host: $(hostname)"
-echo "GPU: $(nvidia-smi --query-gpu=name --format=csv,noheader 2>/dev/null || echo 'N/A')"
+echo "GPU: $(nvidia-smi --query-gpu=name --format=csv,noheader 2>/dev/null || echo N/A)"
 echo ""
 
-# ===== 提取 A_school 模型（从小到大，逐一下载+提取）=====
-# Qwen2.5-14B 已完成，跳过
+# ===== 提取 A_school 模型（从大到小，逐一下载+提取）=====
+# ✅ 已完成（已提交 GitHub）:
+#   - Qwen2.5-14B
+#   - Qwen2.5-32B
+#   - deepseek-ai/DeepSeek-R1-Distill-Qwen-14B
+#   - google/gemma-2-9b
 
-# 1. 8B 模型（最快）
+# 1. Llama-3.1-8B
 python extract.py --model meta-llama/Meta-Llama-3.1-8B
 
-# 2. 9B 模型
-python extract.py --model google/gemma-2-9b
-
-# 3. 14B 模型
-python extract.py --model deepseek-ai/DeepSeek-R1-Distill-Qwen-14B
-
-# 4. 32B 模型（最慢，放最后）
-python extract.py --model Qwen/Qwen2.5-32B
+# 2. DeepSeek-R1-Distill-Qwen-32B（新的 32B 模型）
+python extract.py --model deepseek-ai/DeepSeek-R1-Distill-Qwen-32B
 
 echo "=== A_school extract done ==="
 
@@ -52,3 +50,4 @@ echo "如需提取请使用 extract-large.sbatch"
 
 echo ""
 echo "=== Job finished: $(date) ==="
+
