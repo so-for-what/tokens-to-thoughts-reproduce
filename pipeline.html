@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>From Tokens to Thoughts — 复现管线 v2</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'JetBrains Mono', monospace;
+      background: #020617;
+      min-height: 100vh;
+      padding: 2rem;
+      color: #e2e8f0;
+    }
+    .container { max-width: 1200px; margin: 0 auto; }
+    .header { margin-bottom: 2rem; }
+    .header-row { display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem; }
+    .pulse-dot { width: 12px; height: 12px; background: #22d3ee; border-radius: 50%; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+    h1 { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.025em; }
+    .subtitle { color: #94a3b8; font-size: 0.875rem; margin-left: 1.75rem; }
+    .diagram-container { background: rgba(15, 23, 42, 0.5); border-radius: 1rem; border: 1px solid #1e293b; padding: 1.5rem; overflow-x: auto; }
+    svg { width: 100%; display: block; }
+    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; margin-top: 2rem; }
+    .card { background: rgba(15, 23, 42, 0.5); border-radius: 0.75rem; border: 1px solid #1e293b; padding: 1.25rem; }
+    .card-header { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem; }
+    .card-dot { width: 8px; height: 8px; border-radius: 50%; }
+    .card-dot.cyan { background: #22d3ee; }
+    .card-dot.emerald { background: #34d399; }
+    .card-dot.violet { background: #a78bfa; }
+    .card-dot.amber { background: #fbbf24; }
+    .card-dot.rose { background: #fb7185; }
+    .card-dot.orange { background: #fb923c; }
+    .card h3 { font-size: 0.875rem; font-weight: 600; }
+    .card ul { list-style: none; color: #94a3b8; font-size: 0.75rem; line-height: 1.6; }
+    .card li { margin-bottom: 0.25rem; }
+    .footer { text-align: center; margin-top: 1.5rem; color: #475569; font-size: 0.75rem; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.75rem; margin-top: 1rem; }
+    th, td { border: 1px solid #1e293b; padding: 0.5rem 0.75rem; text-align: left; }
+    th { background: rgba(15, 23, 42, 0.8); font-weight: 600; color: #e2e8f0; }
+    td { color: #94a3b8; }
+    tr:hover td { background: rgba(15, 23, 42, 0.3); }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <div class="header-row">
+      <div class="pulse-dot"></div>
+      <h1>From Tokens to Thoughts · 复现管线 v2</h1>
+    </div>
+    <p class="subtitle">Shani et al. (2025) — 分工更新：🧑A有GPU+学校 / 🧑B有GPU / 🧑C无GPU</p>
+  </div>
+
+  <!-- ========================= MAIN DIAGRAM ========================= -->
+  <div class="diagram-container">
+    <svg viewBox="0 0 1150 820">
+      <defs>
+        <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+          <polygon points="0 0, 10 3.5, 0 7" fill="#64748b"/>
+        </marker>
+        <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+          <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1e293b" stroke-width="0.5"/>
+        </pattern>
+      </defs>
+      <rect width="1150" height="820" fill="url(#grid)"/>
+
+      <!-- ═══════ 阶段①：写代码 ═══════ -->
+      <text x="30" y="30" fill="#64748b" font-size="9" font-weight="600">阶段① ｜ 写代码（🧑A, 此时没跑任何模型）</text>
+
+      <rect x="30" y="45" width="180" height="65" rx="8" fill="rgba(30,41,59,0.5)" stroke="#94a3b8" stroke-width="1.5"/>
+      <text x="120" y="65" fill="white" font-size="11" font-weight="600" text-anchor="middle">📦 human_concepts.csv</text>
+      <text x="120" y="82" fill="#94a3b8" font-size="9" text-anchor="middle">1105 items</text>
+      <text x="120" y="97" fill="#94a3b8" font-size="8" text-anchor="middle">Rosch + McCloskey</text>
+
+      <line x1="210" y1="77" x2="245" y2="77" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+      <rect x="250" y="45" width="240" height="65" rx="8" fill="rgba(8,51,68,0.4)" stroke="#22d3ee" stroke-width="1.5"/>
+      <text x="370" y="65" fill="white" font-size="11" font-weight="600" text-anchor="middle">🧬 extract.py + analysis.py</text>
+      <text x="370" y="82" fill="#94a3b8" font-size="9" text-anchor="middle">🧑A 写，定义 prompt/池化/格式</text>
+      <text x="370" y="97" fill="#22d3ee" font-size="8" text-anchor="middle">提交 GitHub → 🧑B🧑C git pull 即得</text>
+
+      <!-- git pull 分支线 -->
+      <line x1="490" y1="77" x2="530" y2="77" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrow)"/>
+      <text x="518" y="72" fill="#94a3b8" font-size="8">git pull</text>
+
+      <!-- ═══════ 阶段②：唯一一次提取 ═══════ -->
+      <rect x="535" y="20" width="595" height="400" rx="12" fill="rgba(34,211,238,0.04)" stroke="#22d3ee" stroke-width="1.5"/>
+      <rect x="545" y="28" width="210" height="20" rx="4" fill="rgba(34,211,238,0.15)" stroke="#22d3ee" stroke-width="0.8"/>
+      <text x="650" y="42" fill="#22d3ee" font-size="10" font-weight="600" text-anchor="middle">阶段② ｜ 唯一一次 Embedding 提取 🚀</text>
+      <text x="545" y="60" fill="#94a3b8" font-size="8">三人各跑各的，产出统一格式 models_embeddings/{name}.npy</text>
+      <line x1="545" y1="66" x2="1120" y2="66" stroke="#22d3ee" stroke-width="0.5" opacity="0.2"/>
+
+      <!-- 🧑A (GPU + 学校) -->
+      <rect x="545" y="75" width="100" height="24" rx="4" fill="rgba(251,191,36,0.6)" stroke="#fbbf24" stroke-width="1"/>
+      <text x="595" y="91" fill="#fbbf24" font-size="10" font-weight="600" text-anchor="middle">🧑A · 主力</text>
+
+      <!-- A 本地 -->
+      <rect x="545" y="105" width="280" height="130" rx="6" fill="rgba(6,78,59,0.15)" stroke="#34d399" stroke-width="1"/>
+      <text x="685" y="121" fill="#34d399" font-size="10" font-weight="600" text-anchor="middle">🖥 本地 GPU（RTX 4060）</text>
+      <line x1="555" y1="129" x2="815" y2="129" stroke="#34d399" stroke-width="0.5" opacity="0.2"/>
+      <text x="555" y="143" fill="#94a3b8" font-size="8">Word2Vec · GloVe · BERT-base/large</text>
+      <text x="555" y="157" fill="#94a3b8" font-size="8">RoBERTa · DeBERTa · GPT-2 · GPT-2-medium</text>
+      <text x="555" y="171" fill="#94a3b8" font-size="8">Qwen2.5-0.5B/1.5B · Llama-3.2-1B · Phi-2</text>
+      <text x="555" y="191" fill="#34d399" font-size="8">≈ 14 个 · ~30 分钟</text>
+      <text x="555" y="205" fill="#94a3b8" font-size="8">还有 2 台 4060 时：分一些给 B 跑</text>
+
+      <!-- A 学校 -->
+      <rect x="545" y="240" width="280" height="130" rx="6" fill="rgba(120,53,15,0.08)" stroke="#fbbf24" stroke-width="1"/>
+      <text x="685" y="256" fill="#fbbf24" font-size="10" font-weight="600" text-anchor="middle">🏫 学校平台（USTC 107 · A100）</text>
+      <line x1="555" y1="264" x2="815" y2="264" stroke="#fbbf24" stroke-width="0.5" opacity="0.2"/>
+      <text x="555" y="278" fill="#94a3b8" font-size="8">Llama-3.1-8B/70B · Qwen2.5-14B/32B/72B</text>
+      <text x="555" y="292" fill="#94a3b8" font-size="8">Gemma-2-9B · DeepSeek-Distill-14B/32B</text>
+      <text x="555" y="306" fill="#94a3b8" font-size="8">OLMo-7B（完整 57 checkpoint）</text>
+      <text x="555" y="326" fill="#fbbf24" font-size="8">≈ 8 个大模型 · ~60 分钟（排队不定）</text>
+      <text x="555" y="340" fill="#94a3b8" font-size="8">⚠️ 这一块只有你能跑</text>
+
+      <!-- 🧑B (有GPU) -->
+      <rect x="860" y="75" width="100" height="24" rx="4" fill="rgba(34,211,238,0.6)" stroke="#22d3ee" stroke-width="1"/>
+      <text x="910" y="91" fill="#22d3ee" font-size="10" font-weight="600" text-anchor="middle">🧑B · 副手</text>
+
+      <rect x="860" y="105" width="260" height="130" rx="6" fill="rgba(8,51,68,0.15)" stroke="#22d3ee" stroke-width="1"/>
+      <text x="990" y="121" fill="#22d3ee" font-size="10" font-weight="600" text-anchor="middle">🖥 本地 GPU（RTX 4060）</text>
+      <line x1="870" y1="129" x2="1110" y2="129" stroke="#22d3ee" stroke-width="0.5" opacity="0.2"/>
+      <text x="870" y="145" fill="#94a3b8" font-size="8">Gemma-2-2B</text>
+      <text x="870" y="161" fill="#94a3b8" font-size="8">Phi-4-mini · 更多 Qwen 变体</text>
+      <text x="870" y="177" fill="#94a3b8" font-size="8">DeepSeek-Distill-Qwen-1.5B/7B</text>
+      <text x="870" y="197" fill="#22d3ee" font-size="8">≈ 6-8 个 · ~20-30 分钟</text>
+      <text x="870" y="215" fill="#94a3b8" font-size="8">如果 A 的 4060 等不及，</text>
+      <text x="870" y="229" fill="#94a3b8" font-size="8">可以分一些给 B 跑</text>
+
+      <!-- 🧑C (无GPU) -->
+      <rect x="860" y="240" width="100" height="24" rx="4" fill="rgba(251,146,60,0.6)" stroke="#fb923c" stroke-width="1"/>
+      <text x="910" y="256" fill="#fb923c" font-size="10" font-weight="600" text-anchor="middle">🧑C · 辅助</text>
+
+      <rect x="860" y="270" width="260" height="135" rx="6" fill="rgba(251,146,60,0.08)" stroke="#fb923c" stroke-width="1"/>
+      <text x="990" y="288" fill="#fb923c" font-size="10" font-weight="600" text-anchor="middle">🖥 CPU（无 GPU）</text>
+      <line x1="870" y1="296" x2="1110" y2="296" stroke="#fb923c" stroke-width="0.5" opacity="0.2"/>
+      <text x="870" y="312" fill="#94a3b8" font-size="8">🟢 CPU 即可：Word2Vec · GloVe</text>
+      <text x="870" y="328" fill="#94a3b8" font-size="8">🟢 写分析代码 + 边跑边调试</text>
+      <text x="870" y="344" fill="#94a3b8" font-size="8">🟢 等 embedding 收齐后跑全量分析</text>
+      <text x="870" y="360" fill="#94a3b8" font-size="8">🟢 设计图表、核对数值</text>
+      <text x="870" y="376" fill="#94a3b8" font-size="8">🟢 OLMo 训练动态分析（非 GPU 密集型）</text>
+      <text x="870" y="394" fill="#fb923c" font-size="8">⏱ 全程参与，不依赖 GPU</text>
+
+      <!-- 产出汇总箭头 -->
+      <path d="M 685 370 L 685 390 L 370 390 L 370 430" fill="none" stroke="#fbbf24" stroke-width="1.5" marker-end="url(#arrow)"/>
+      <path d="M 990 235 L 990 250 L 370 250 L 370 430" fill="none" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#arrow)"/>
+      <path d="M 990 405 L 990 420 L 370 420 L 370 430" fill="none" stroke="#fb923c" stroke-width="1.5" marker-end="url(#arrow)"/>
+      <text x="600" y="402" fill="#94a3b8" font-size="9" text-anchor="middle">🧑A 收齐所有 .npy → analysis.py</text>
+
+      <!-- ═══════ 阶段③：分析 ═══════ -->
+      <rect x="30" y="445" width="1090" height="350" rx="12" fill="rgba(251,146,60,0.03)" stroke="#fb923c" stroke-width="1.5"/>
+      <rect x="40" y="453" width="180" height="20" rx="4" fill="rgba(251,146,60,0.1)" stroke="#fb923c" stroke-width="0.8"/>
+      <text x="130" y="467" fill="#fb923c" font-size="10" font-weight="600" text-anchor="middle">阶段③ ｜ 分析 + 出图（全员可参与）📊</text>
+      <text x="40" y="485" fill="#94a3b8" font-size="8">全部 CPU 运算，谁有空谁跑。建议 🧑A 汇总 + 🧑C 做图</text>
+
+      <!-- RQ1 -->
+      <rect x="50" y="500" width="320" height="130" rx="8" fill="rgba(8,51,68,0.4)" stroke="#22d3ee" stroke-width="1.5"/>
+      <text x="210" y="520" fill="#22d3ee" font-size="12" font-weight="700" text-anchor="middle">📊 RQ1 类别边界对齐</text>
+      <line x1="60" y1="530" x2="360" y2="530" stroke="#22d3ee" stroke-width="0.5" opacity="0.3"/>
+      <rect x="65" y="540" width="290" height="22" rx="4" fill="rgba(8,51,68,0.3)" stroke="#22d3ee" stroke-width="0.8"/>
+      <text x="210" y="555" fill="#94a3b8" font-size="8" text-anchor="middle">embs → k-means(K=人类类别数)×100 → AMI</text>
+      <rect x="65" y="567" width="290" height="22" rx="4" fill="rgba(8,51,68,0.3)" stroke="#22d3ee" stroke-width="0.8"/>
+      <text x="210" y="582" fill="#94a3b8" font-size="8" text-anchor="middle">每层 hidden state → 取 Peak AMI</text>
+      <text x="65" y="615" fill="#22d3ee" font-size="8">💻 CPU · ⏱ ~3min/模型</text>
+
+      <!-- RQ2 -->
+      <rect x="415" y="500" width="320" height="130" rx="8" fill="rgba(6,78,59,0.4)" stroke="#34d399" stroke-width="1.5"/>
+      <text x="575" y="520" fill="#34d399" font-size="12" font-weight="700" text-anchor="middle">🎯 RQ2 典型性结构</text>
+      <line x1="425" y1="530" x2="725" y2="530" stroke="#34d399" stroke-width="0.5" opacity="0.3"/>
+      <rect x="430" y="540" width="290" height="22" rx="4" fill="rgba(6,78,59,0.3)" stroke="#34d399" stroke-width="0.8"/>
+      <text x="575" y="555" fill="#94a3b8" font-size="8" text-anchor="middle">cosine(E(item), E(category_name))</text>
+      <rect x="430" y="567" width="290" height="22" rx="4" fill="rgba(6,78,59,0.3)" stroke="#34d399" stroke-width="0.8"/>
+      <text x="575" y="582" fill="#94a3b8" font-size="8" text-anchor="middle">Spearman ρ vs human_typicality</text>
+      <text x="430" y="615" fill="#34d399" font-size="8">💻 CPU · ⏱ &lt;1秒/模型</text>
+
+      <!-- RQ3 -->
+      <rect x="780" y="500" width="320" height="130" rx="8" fill="rgba(76,29,149,0.4)" stroke="#a78bfa" stroke-width="1.5"/>
+      <text x="940" y="520" fill="#a78bfa" font-size="12" font-weight="700" text-anchor="middle">⚖️ RQ3 压缩-意义权衡</text>
+      <line x1="790" y1="530" x2="1090" y2="530" stroke="#a78bfa" stroke-width="0.5" opacity="0.3"/>
+      <rect x="795" y="540" width="290" height="22" rx="4" fill="rgba(76,29,149,0.3)" stroke="#a78bfa" stroke-width="0.8"/>
+      <text x="940" y="555" fill="#94a3b8" font-size="8" text-anchor="middle">遍历 K=[2..50] → k-means(K) → ℒ</text>
+      <rect x="795" y="567" width="290" height="22" rx="4" fill="rgba(76,29,149,0.3)" stroke="#a78bfa" stroke-width="0.8"/>
+      <text x="940" y="582" fill="#94a3b8" font-size="8" text-anchor="middle">ℒ = I(X;C) + β · Distortion</text>
+      <text x="795" y="615" fill="#a78bfa" font-size="8">💻 CPU · ⏱ ~30秒/模型</text>
+
+      <!-- 汇总箭头 -->
+      <path d="M 210 630 L 210 655 L 575 655" fill="none" stroke="#22d3ee" stroke-width="1.2"/>
+      <path d="M 575 630 L 575 655" fill="none" stroke="#34d399" stroke-width="1.2"/>
+      <path d="M 940 630 L 940 655 L 575 655" fill="none" stroke="#a78bfa" stroke-width="1.2"/>
+      <line x1="370" y1="655" x2="790" y2="655" stroke="#64748b" stroke-width="1.5"/>
+      <polygon points="790,650 800,655 790,660" fill="#64748b"/>
+
+      <!-- 汇总框 -->
+      <rect x="380" y="670" width="380" height="110" rx="10" fill="rgba(251,146,60,0.1)" stroke="#fb923c" stroke-width="1.5"/>
+      <text x="570" y="692" fill="#fb923c" font-size="12" font-weight="700" text-anchor="middle">📋 汇总出图</text>
+      <line x1="390" y1="702" x2="750" y2="702" stroke="#fb923c" stroke-width="0.5" opacity="0.3"/>
+      <text x="570" y="720" fill="#94a3b8" font-size="9" text-anchor="middle">三路结果汇总，横轴统一（参数量/模型家族）</text>
+      <text x="570" y="738" fill="#94a3b8" font-size="9" text-anchor="middle">纵轴: AMI | Spearman ρ | ℒ</text>
+      <text x="570" y="756" fill="#fb923c" font-size="9" text-anchor="middle">🧑C 可独立跑分析 + 做图表</text>
+      <text x="570" y="772" fill="#94a3b8" font-size="8" text-anchor="middle">即使 🧑B/C 的 embedding 没到位，现有部分也能先出图</text>
+
+    </svg>
+  </div>
+
+  <!-- ====== 分工卡片 ====== -->
+  <div class="cards" style="margin-top:2rem;">
+    <div class="card">
+      <div class="card-header"><div class="card-dot amber"></div><h3>🧑A · 主力（GPU + 学校）</h3></div>
+      <ul>
+        <li>📝 写 extract.py / analysis.py / utils.py（一次写完，全员共享）</li>
+        <li>🖥 本地 4060：跑 Encoder 家族 + 小 Decoder ~14 个模型</li>
+        <li>🏫 USTC 107：跑 8 个大模型 + OLMo 57 ckpt（只有你能跑）</li>
+        <li>📊 收齐 🧑B🧑C 的 .npy，跑分析汇总出图</li>
+        <li>⏱ ~40min(本地) + ~60min(学校+排队) + ~10min(分析)</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-dot cyan"></div><h3>🧑B · 副手（有 GPU）</h3></div>
+      <ul>
+        <li>🖥 本地 4060：跑 Decoder 家族 ~6-8 个模型</li>
+        <li>📦 产出 → models_embeddings/*.npy，交给 🧑A</li>
+        <li>🔄 如果 A 的 4060 忙不过来，可以分担部分小模型</li>
+        <li>⏱ ~20-30 分钟</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-dot orange"></div><h3>🧑C · 辅助（无 GPU）</h3></div>
+      <ul>
+        <li>🖥 CPU 即可：Word2Vec · GloVe 基线（秒出）</li>
+        <li>🧪 协助调试分析代码，验证中间结果</li>
+        <li>📊 等第一批 embedding 出来后就跑分析 + 做图</li>
+        <li>🔄 OLMo 训练动态分析（非 GPU 密集型）</li>
+        <li>✅ 验证数值正确性：论文结果 vs 复现结果</li>
+        <li>⏱ 全程参与，不依赖 GPU</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ====== 时间线 ====== -->
+  <div class="diagram-container" style="margin-top:2rem;">
+    <h2 style="font-size:1rem;margin-bottom:1rem;">⏳ 执行时间线</h2>
+    <div style="font-size:0.75rem;line-height:1.8;color:#94a3b8;">
+<pre style="background:rgba(15,23,42,0.8);padding:1rem;border-radius:0.5rem;color:#94a3b8;font-size:0.8rem;line-height:2;">
+T+0min    🧑A 写代码 + push GitHub | 🧑B🧑C git pull
+T+30min   🧑A 本地模型① 抽完 | 🧑B 本地模型② 抽完 | 🧑C 跑 Word2Vec+GloVe
+T+30min   🧑A 开始跑学校平台（学校排队，实际时间不定）
+T+30min   🧑C 拿到第一批 .npy → 开始跑分析 + 出图
+T+90min   🧑A 学校模型抽完（不计排队） | 🧑C 已出部分结果
+T+120min  全量分析完成 → 出图 → 对比论文
+</pre>
+      <p style="margin-top:0.5rem;color:#64748b;">
+        ⚡ 等 🧑A 4060 跑完后，可以用学校平台的排队时间来写分析代码 / 预跑部分结果<br>
+        ⚡ 🧑C 在无 GPU 情况下也能产出 Word2Vec/GloVe + 分析代码 + 图表设计 + 数值验证
+      </p>
+    </div>
+  </div>
+
+  <!-- ====== 模型清单表 ====== -->
+  <div class="diagram-container" style="margin-top:2rem;">
+    <h2 style="font-size:1rem;margin-bottom:1rem;">📋 模型分组</h2>
+    <table>
+      <thead>
+        <tr><th>模型</th><th>参数</th><th>类型</th><th>责任人</th><th>环境</th><th>时间</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Word2Vec</td><td>—</td><td>经典</td><td>🧑C</td><td>CPU</td><td>&lt;1s</td></tr>
+        <tr><td>GloVe</td><td>—</td><td>经典</td><td>🧑C</td><td>CPU</td><td>&lt;1s</td></tr>
+        <tr><td>BERT-base</td><td>110M</td><td>Enc</td><td>🧑A</td><td>4060</td><td>15s</td></tr>
+        <tr><td>BERT-large</td><td>340M</td><td>Enc</td><td>🧑A</td><td>4060</td><td>30s</td></tr>
+        <tr><td>RoBERTa-large</td><td>355M</td><td>Enc</td><td>🧑A</td><td>4060</td><td>30s</td></tr>
+        <tr><td>DeBERTa-large</td><td>304M</td><td>Enc</td><td>🧑A</td><td>4060</td><td>30s</td></tr>
+        <tr><td>GPT-2</td><td>124M</td><td>Dec</td><td>🧑A</td><td>4060</td><td>15s</td></tr>
+        <tr><td>GPT-2-medium</td><td>355M</td><td>Dec</td><td>🧑A</td><td>4060</td><td>30s</td></tr>
+        <tr><td>Qwen2.5-0.5B</td><td>0.5B</td><td>Dec</td><td>🧑A</td><td>4060</td><td>2min</td></tr>
+        <tr><td>Qwen2.5-1.5B</td><td>1.5B</td><td>Dec</td><td>🧑A</td><td>4060</td><td>3min</td></tr>
+        <tr><td>Llama-3.2-1B</td><td>1B</td><td>Dec</td><td>🧑A</td><td>4060</td><td>2min</td></tr>
+        <tr><td>Phi-2</td><td>2.7B</td><td>Dec</td><td>🧑A</td><td>4060</td><td>5min</td></tr>
+        <tr style="background:rgba(34,211,238,0.05)"><td colspan="6"></td></tr>
+        <tr><td>Gemma-2-2B</td><td>2B</td><td>Dec</td><td>🧑B</td><td>4060</td><td>4min</td></tr>
+        <tr><td>Qwen2.5-4B</td><td>4B</td><td>Dec</td><td>🧑B</td><td>4060?/学校</td><td>6min</td></tr>
+        <tr><td>Phi-4-mini</td><td>3.8B</td><td>Dec</td><td>🧑B</td><td>学校</td><td>5min</td></tr>
+        <tr><td>DeepSeek-Distill-Qwen-7B</td><td>7B</td><td>Dec</td><td>🧑B</td><td>学校</td><td>8min</td></tr>
+        <tr><td>OLMo-7B(6ckpt子集)</td><td>7B</td><td>Dec</td><td>🧑B</td><td>学校</td><td>15min</td></tr>
+        <tr style="background:rgba(251,191,36,0.05)"><td colspan="6"></td></tr>
+        <tr><td>Llama-3.1-8B</td><td>8B</td><td>Dec</td><td>🧑A</td><td>A100</td><td>10min</td></tr>
+        <tr><td>Gemma-2-9B</td><td>9B</td><td>Dec</td><td>🧑A</td><td>A100</td><td>10min</td></tr>
+        <tr><td>Qwen2.5-14B</td><td>14B</td><td>Dec</td><td>🧑A</td><td>A100</td><td>15min</td></tr>
+        <tr><td>DeepSeek-Distill-Qwen-14B</td><td>14B</td><td>Dec</td><td>🧑A</td><td>A100</td><td>15min</td></tr>
+        <tr><td>Qwen2.5-32B</td><td>32B</td><td>Dec</td><td>🧑A</td><td>A100</td><td>20min</td></tr>
+        <tr><td>DeepSeek-Distill-32B</td><td>32B</td><td>Dec</td><td>🧑A</td><td>A100</td><td>20min</td></tr>
+        <tr><td>Llama-3.1-70B</td><td>70B</td><td>Dec</td><td>🧑A</td><td>A100</td><td>30min</td></tr>
+        <tr><td>Qwen2.5-72B</td><td>72B</td><td>Dec</td><td>🧑A</td><td>A100</td><td>30min</td></tr>
+        <tr><td>OLMo-7B(57ckpt)</td><td>7B</td><td>Dec</td><td>🧑A</td><td>A100</td><td>60min</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ====== 代码结构 ====== -->
+  <div class="diagram-container" style="margin-top:2rem;">
+    <h2 style="font-size:1rem;margin-bottom:1rem;">📁 代码结构</h2>
+    <div style="background:rgba(15,23,42,0.8);border-radius:0.5rem;padding:1rem;font-size:0.8rem;line-height:1.7;">
+      <span style="color:#22d3ee;">tokens-to-thoughts-reproduce/</span><br>
+      ├── <span style="color:#34d399;">human_concepts.csv</span><span style="color:#64748b;">          # 数据集（已就绪）</span><br>
+      ├── <span style="color:#fbbf24;">extract.py</span><span style="color:#64748b;">                 # [🧑A写] python extract.py --model bert-large</span><br>
+      ├── <span style="color:#fbbf24;">analysis.py</span><span style="color:#64748b;">               # [🧑A写] python analysis.py → 出所有图</span><br>
+      ├── <span style="color:#fbbf24;">utils.py</span><span style="color:#64748b;">                  # ℒ计算 · 聚类 · 指标</span><br>
+      ├── <span style="color:#a78bfa;">models_embeddings/</span><span style="color:#64748b;">        # 🧑A🧑B🧑C 三人产出汇合点</span><br>
+      │   ├── bert-large-uncased.npy<br>
+      │   ├── bert-large-uncased_metadata.json<br>
+      │   ├── word2vec.npy<br>
+      │   └── ...<br>
+      ├── <span style="color:#fb923c;">results/</span><br>
+      │   ├── rq1_ami_scatter.png<br>
+      │   ├── rq2_spearman_bar.png<br>
+      │   ├── rq3_L_curve.png<br>
+      │   └── summary.csv<br>
+      ├── <span style="color:#475569;">pipeline.html</span><br>
+      └── <span style="color:#475569;">README.md</span>
+    </div>
+  </div>
+
+  <!-- ====== 注意事项 ====== -->
+  <div class="cards" style="margin-top:1.5rem;">
+    <div class="card">
+      <div class="card-header"><div class="card-dot cyan"></div><h3>📦 Embedding 格式</h3></div>
+      <ul>
+        <li>📄 models_embeddings/{model}.npy</li>
+        <li>&nbsp;&nbsp;shape: (1105, dim), 行序固定</li>
+        <li>📄 {model}_metadata.json</li>
+        <li>&nbsp;&nbsp;{"model":"bert-large", "type":"encoder",</li>
+        <li>&nbsp;&nbsp;&nbsp;"num_layers":24, "dim":1024}</li>
+        <li>&nbsp;&nbsp;&nbsp;"prompt":"This is a {word}. "</li>
+        <li>&nbsp;&nbsp;&nbsp;"pooling":"avg"</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-dot amber"></div><h3>⏱ 总工时</h3></div>
+      <ul>
+        <li>🧑A: ~40min(本地) + ~60min(学校+排队)</li>
+        <li>🧑B: ~30min（纯抽）</li>
+        <li>🧑C: ~全程（分析 + 做图 + 验证）</li>
+        <li>━━━━━━━━━━━━━━━</li>
+        <li>⌛ 最快 2 小时出全量结果</li>
+        <li>📊 产出：论文 Figure 1-3 复现</li>
+        <li>⚠️ 学校排队不定，可先跑部分出图</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-dot rose"></div><h3>⚠️ 注意</h3></div>
+      <ul>
+        <li>• prompt 统一 "This is a {word}. "</li>
+        <li>• avg pooling over subtokens</li>
+        <li>• k-means 重复 100 次</li>
+        <li>• 🧑B 的 Qwen4B 如果 4060 放不下 → 给 🧑A 送学校跑</li>
+        <li>• 🧑C 跑 Word2Vec/GloVe 用 gensim 秒出</li>
+        <li>• 所有模型 share 同一份 CSV</li>
+        <li>• 环境（CUDA/Python）不影响数值</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ====== 文件说明 ====== -->
+  <div class="diagram-container" style="margin-top:2rem;">
+    <h2 style="font-size:1rem;margin-bottom:1rem;">📁 文件说明</h2>
+    <table>
+      <thead>
+        <tr><th>文件</th><th>谁用</th><th>一句话</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>human_concepts.csv</td><td>🧑🧑🧑</td><td>论文官方数据集（1105 items），全员共用</td></tr>
+        <tr><td>extract.py</td><td>🧑A🧑B</td><td>python extract.py --model bert-base — 从 HF 模型提 embedding</td></tr>
+        <tr><td>extract_static.py</td><td>🧑C</td><td>python extract_static.py --method all — Word2Vec/GloVe，CPU 秒出</td></tr>
+        <tr><td>analysis.py</td><td>🧑A🧑C</td><td>python analysis.py — RQ1+RQ2+RQ3 分析出图</td></tr>
+        <tr><td>utils.py</td><td>🧑A🧑C</td><td>ℒ 计算 / k-means / AMI / Spearman — 工具箱</td></tr>
+        <tr><td>requirements.txt</td><td>🧑🧑🧑</td><td>pip install -r requirements.txt — 一次性装依赖</td></tr>
+        <tr><td>pipeline.html</td><td>🧑🧑🧑</td><td>可视化管线图，浏览器打开</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="footer">Shani et al. (2025) · Reproduction Pipeline v2 · Updated 2026-06-06</p>
+
+</div>
+</body>
+</html>

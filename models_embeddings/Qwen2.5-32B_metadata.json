@@ -1,0 +1,6 @@
+{
+  "model": "Qwen/Qwen2.5-32B",
+  "num_layers": 64,
+  "hidden_dim": 5120,
+  "num_items": 1105
+}
