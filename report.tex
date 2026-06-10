@@ -18,7 +18,8 @@
 \newcommand{\KL}{\operatorname{D_{KL}}}
 \newcommand{\argmin}{\operatorname{argmin}}
 
-\title{\vspace{-2cm}\textbf{Tokens to Thoughts 复现报告}\\\large 信息论视角下的 RQ1 与 RQ3——范畴对齐与压缩-意义权衡}
+\title{\vspace{-2cm}\textbf{Tokens to Thoughts 复现报告}\\\large 信息论视角下的范畴对齐、典型性与压缩-意义权衡\\
+（RQ1——AMI 聚类对齐 / RQ2——典型性 Spearman $\rho$ / RQ3——压缩-意义 $\mathcal{L}$ 曲线）}
 \author{复现团队}
 \date{\today}
 
@@ -31,6 +32,7 @@
 
 \begin{itemize}[noitemsep]
   \item \textbf{RQ1（范畴对齐）：} 聚类 LLM 嵌入能否还原人类定义的类别？指标：AMI（调整互信息）。
+  \item \textbf{RQ2（典型性结构）：} LLM 嵌入中的概念相似度能否预测人类对类别成员的典型性评分？指标：Spearman $\rho$。
   \item \textbf{RQ3（压缩-意义权衡）：} LLM 嵌入在信息瓶颈（Information Bottleneck）框架下的压缩-失真权衡曲线是否收敛到人类类别所在的自然拐点？指标：$\mathcal{L}$ 曲线。
 \end{itemize}
 
@@ -257,6 +259,84 @@ bert-large-uncased & encoder & 0.024 & 0.130\\
 
 \textbf{与论文的一致性：} 论文报告 40+ 个模型 AMI 均高于随机，我们确认 24 个模型全部高于随机基线（McCloskey1978 随机期望 AMI $\approx 0.0$）。经典嵌入最优的结论也得到确认。
 
+\section{RQ2：典型性结构}
+
+\subsection{方法}
+
+\textbf{RQ2 的核心问题：} LLM 嵌入空间中的相似度是否能预测人类对类别成员典型性（typicality）的感知？
+
+\textbf{方法：} 对每个模型 $\times$ 数据集组合，计算每个概念 $i$ 的嵌入与其余概念在同一类别中的平均嵌入之间的余弦相似度，作为该概念的\textbf{嵌入相似度得分} $s_i$：
+\[
+s_i = \frac{1}{|C|-1}\sum_{j \in C, j \neq i} \cos(\mathbf{e}_i, \mathbf{e}_j)
+\tag{14}
+\]
+其中 $\mathbf{e}_i$ 是概念 $i$ 的静态嵌入，$C$ 是概念 $i$ 所属的类别。
+
+然后将 $s_i$ 与人类对概念 $i$ 的典型性评分 $\tau_i$ 进行 Spearman 秩相关分析。Spearman $\rho$ 衡量两个排序之间的一致性——若嵌入相似度高的概念恰好也是人类认为更典型的成员，则 $\rho > 0$。
+
+从信息论的角度，典型性可以被理解为\textbf{概念在嵌入空间中的信息密度}。一个高度典型的概念（如\"鸟\"类别中的\"知更鸟\"）位于其类别嵌入空间的中心附近，描述它所需的比特数较少（即压缩效率高）；一个边缘概念（如\"企鹅\"）偏离中心，需要更多比特来描述。如果嵌入空间忠实地编码了这种信息密度差异，那么 $s_i$ 应与 $\tau_i$ 正相关。
+
+\subsection{结果}
+
+\begin{table}[H]\centering\small
+\begin{tabular}{lcrr}
+\toprule
+\textbf{模型} & \textbf{类型} & \textbf{$\rho$（McCloskey1978）} & \textbf{$p$}\\
+\midrule
+word2vec & classic & 0.344 & $4\times10^{-15}$\\
+glove & classic & 0.372 & $2\times10^{-17}$\\
+\cmidrule{2-4}
+gemma-2-9b & decoder & 0.197 & $1\times10^{-5}$\\
+gemma-2-2b & decoder & 0.188 & $3\times10^{-5}$\\
+roberta-large & encoder & 0.176 & $9\times10^{-5}$\\
+gpt2 & decoder & 0.157 & $5\times10^{-4}$\\
+gpt2-medium & decoder & 0.153 & $7\times10^{-4}$\\
+deberta-large & encoder & 0.159 & $4\times10^{-4}$\\
+bert-large-uncased & encoder & 0.137 & $2\times10^{-3}$\\
+bert-base-uncased & encoder & 0.135 & $3\times10^{-3}$\\
+Qwen2-7B & decoder & 0.124 & $6\times10^{-3}$\\
+Qwen2.5-1.5B & decoder & 0.123 & $6\times10^{-3}$\\
+Qwen2-0.5B & decoder & 0.117 & $1\times10^{-2}$\\
+Qwen2.5-0.5B & decoder & 0.114 & $1\times10^{-2}$\\
+phi-2 & decoder & 0.103 & $2\times10^{-2}$\\
+Qwen1.5-4B & decoder & 0.104 & $2\times10^{-2}$\\
+Qwen2-1.5B & decoder & 0.106 & $2\times10^{-2}$\\
+phi-1 & decoder & 0.096 & $3\times10^{-2}$\\
+Qwen1.5-0.5B & decoder & 0.100 & $3\times10^{-2}$\\
+\cmidrule{2-4}
+DeepSeek-R1-D-7B & decoder & 0.059 & 0.19\\
+Qwen2.5-14B & decoder & 0.030 & 0.51\\
+DeepSeek-R1-D-14B & decoder & 0.031 & 0.49\\
+Qwen2.5-32B & decoder & 0.034 & 0.45\\
+DeepSeek-R1-D-32B & decoder & 0.035 & 0.44\\
+\bottomrule
+\end{tabular}
+\caption{RQ2：McCloskey1978 数据集上的 Spearman $\rho$（静态嵌入）。$p<0.05$ 为显著。}
+\label{tab:rq2}
+\end{table}
+
+\begin{figure}[H]\centering
+\includegraphics[width=0.85\textwidth]{results/rq2_spearman_bar.png}
+\caption{RQ2：全部模型的 Spearman $\rho$ 对比柱状图。经典嵌入和 Gemma 系列表现最佳，DeepSeek 系列和大型 Qwen 不显著。}
+\end{figure}
+
+\begin{figure}[H]\centering
+\includegraphics[width=0.85\textwidth]{results/rq2_by_dataset.png}
+\caption{RQ2：按数据集分组的 Spearman $\rho$。注意 Rosch1975 和 Rosch1973 数据集上几乎所有模型的 $\rho$ 均为负值或无显著相关。}
+\end{figure}
+
+\subsection{RQ2 分析}
+
+\textbf{发现 1（典型性预测能力普遍很弱）：} 即使是最优的 LLM（gemma-2-9b，$\rho=0.197$），也只能解释不到 $4\%$ 的典型性变异（$R^2\approx 0.04$）。相比于 RQ1 中 LLM 能有效区分类别边界，RQ2 表明 LLM 嵌入几乎无法捕捉类别内部的典型性层级结构。
+
+\textbf{发现 2（经典嵌入再次领先）：} word2vec（$\rho=0.344$）和 GloVe（0.372）的表现在统计上优于所有 LLM。这可能是因为词共现统计天然编码了典型性——更典型的成员（如\"知更鸟\"）在共现语料中更频繁地与类别名（\"鸟\"）同时出现，从而在嵌入空间中更接近类别中心。而 LLM 的上下文嵌入包含了句法角色、语用功能等额外信息，这些信息稀释了典型性信号。
+
+\textbf{发现 3（模型大小与典型性负相关）：} Qwen 系列中，$\rho$ 随模型规模增大而下降：0.5B（$\rho=0.114$）> 32B（$\rho=0.034$，不显著）。DeepSeek 蒸馏版同样如此：7B（$\rho=0.059$）> 32B（$\rho=0.035$）。这可能是因为大模型在预训练中习得了更多的句法、语用和世界知识，这些知识与典型性无关，却占据了嵌入空间的主要维度——类似于信息论中的\textbf{率失真折衷}：更大的模型容量被用来编码更丰富的语言现象，反而削弱了对特定语义属性（典型性）的聚焦。
+
+\textbf{发现 4（跨数据集不一致）：} 几乎所有模型在 Rosch1975 和 Rosch1973 数据集上均呈现负相关的趋势。这可能是因为这两个数据集的类别间区分度更高、类别内样本更少（Rosch1973 仅 48 个条目），导致典型性评分的统计噪声主导了相关性。
+
+\textbf{从信息论视角的解释：} 典型性可以理解为类别条件分布 $p(x \mid y)$ 下不同样本的信息密度差异。中心成员具有高先验概率（更\"可预测\"），因此 $-\log_2 p(x \mid y)$ 较低；边缘成员的低先验概率导致较高的自信息。如果嵌入空间忠实地拟合了 $p(x \mid y)$ 的几何结构，则应观察到 $\rho > 0$。然而实验结果表明 LLM 嵌入更关注类别之间的边界（由 $I(X;Y)$ 捕捉），而非类别内部的信息密度梯度——这与 DPI 一致：聚类操作（RQ1）丢弃了大部分信息，而典型性正是这些被丢弃信息的组成部分。
+
 \section{RQ3：压缩-意义权衡}
 
 \subsection{信息瓶颈框架下的推导}
@@ -266,7 +346,7 @@ bert-large-uncased & encoder & 0.024 & 0.130\\
 \textbf{压缩项} $I(X; C_k)$ 的计算：对于 $k$-means 聚类，$C_k$ 是 $X$ 的\textbf{确定性函数}（每个点被分配到唯一簇），因此 $p(c \mid x) \in \{0,1\}$。由互信息的定义：
 \[
 I(X; C_k) = H(C_k) - H(C_k \mid X) = H(C_k)
-\tag{14}
+\tag{15}
 \]
 因为 $H(C_k \mid X) = 0$（给定 $X$ 后 $C_k$ 完全确定）。$H(C_k)$ 取决于聚类结果的大小分布。若 $k$ 个簇大小均衡（各为 $n/k$），则 $H(C_k) = \log_2 k$；若分布不均匀，$H(C_k)$ 略小于 $\log_2 k$。因此，\textbf{压缩项随 $k$ 对数增长}：每增加一倍的簇数，约需多 1 比特的信息来描述。
 
@@ -275,7 +355,7 @@ I(X; C_k) = H(C_k) - H(C_k \mid X) = H(C_k)
 \textbf{替代方案——失真项}：原论文使用\textbf{均方失真}作为意义项的代理：
 \[
 D(k) = \frac{1}{n}\sum_{c} \sum_{x \in c} \|x - \mu_c\|^2
-\tag{15}
+\tag{16}
 \]
 其中 $\mu_c$ 是簇 $c$ 的质心。在信息论框架下，$D(k)$ 与 $I(C_k; Y)$ 的关系可以通过\textbf{率失真理论}（Rate-Distortion Theory）来理解。
 
@@ -290,7 +370,7 @@ R(D) = \min_{p(\hat{x} \mid x): \E[d] \leq D} I(X; \hat{X})
 \textbf{复合目标：}
 \[
 \mathcal{L}(k) = \underbrace{I(X; C_k)}_{\text{复杂度/率}} + \beta \cdot \underbrace{D(k)}_{\text{失真}}
-\tag{17}
+\tag{18}
 \]
 
 这正是 IB 目标（式~9）的\textbf{对偶形式}。在 IB 框架中，拉格朗日函数 $\mathcal{L}_{\text{IB}} = I(X;T) - \beta I(T;Y)$ 寻求压缩和意义的最佳折衷。由于 $I(C_k;Y)$ 的估计困难，原论文用 $D(k)$ 代替 $-I(C_k;Y)$（注意负号：最大化意义等价于最小化失真），得到：
@@ -434,25 +514,29 @@ DeepSeek-R1-D-32B & 32B & 4.21\\
 
 \textbf{发现 3（人类的 $k=18$ 在规律性区域）：} 虽然 $k=18$ 并非严格的数学拐点，但它恰好位于所有 LLM 的 $\mathcal{L}$ 曲线从"快速下降"过渡到"缓慢下降"的区域。在这个区域，增加聚类数的边际收益开始急剧递减——人类选择的类别数正好是这个过渡区间的典型值。
 
-\section{RQ1 与 RQ3 交叉分析}
+\section{RQ1、RQ2 与 RQ3 交叉分析}
 
 \begin{table}[H]\centering
-\begin{tabular}{lcc}
+\begin{tabular}{lccc}
 \toprule
-\textbf{关系} & \textbf{全部模型} & \textbf{仅 LLM}\\
+\textbf{关系} & \textbf{全部模型} & \textbf{仅 LLM} & \textbf{说明}\\
 \midrule
-AMI 与 $\mathcal{L}$ 的 Pearson $r$ & +0.402 & -0.131\\
+AMI 与 $\mathcal{L}$ 的 Pearson $r$ & +0.402 & -0.131 & 两类嵌入 outlier 驱动\\
+AMI 与 $\rho$（RQ2）的 Pearson $r$ & +0.880 & +0.619 & AMI 高则典型性对齐也好\\
+$\mathcal{L}$ 与 $\rho$（RQ2）的 Pearson $r$ & +0.351 & -0.232 & 仅全模型时相关\\
 \bottomrule
 \end{tabular}
-\caption{AMI 与 $\mathcal{L}$ 的相关性。全部模型时正相关由经典嵌入驱动（两者都是 outlier）；排除经典嵌入后几乎无关。}
+\caption{AMI、$\mathcal{L}$ 和 Spearman $\rho$ 三者的相关性矩阵。全模型时经典嵌入作为 outlier 驱动了正向相关；排除后 LLM 内部 AMI 与 $\rho$ 仍呈中等正相关，但 $\mathcal{L}$ 与另外两者几乎无关。}
+\label{tab:cross}
 \end{table}
 
-\textbf{解读：} 当包含 word2vec 和 GloVe 时，正向相关（0.402）是因为经典嵌入同时有高 AMI 和高 $\mathcal{L}$。但在 LLM 内部，AMI 和 $\mathcal{L}$ 几乎不相关（$r=-0.131$），说明\textbf{这两个指标衡量的是嵌入空间中完全不同的属性}：
+\textbf{解读：} 三个指标呈现出清晰的层级关系：
 \begin{itemize}[noitemsep]
   \item \textbf{AMI} 衡量聚类结果与人类标签的\textbf{对齐程度}（语义层面的匹配）
+  \item \textbf{$\rho$}（RQ2）衡量嵌入相似度与人类典型性排序的\textbf{一致性}（类别内细粒度匹配）
   \item \textbf{$\mathcal{L}$} 衡量嵌入空间的\textbf{几何压缩属性}（信息论层面的结构）
 \end{itemize}
-一个模型可以有高 AMI（对齐好）和低 $\mathcal{L}$（压缩好），两者不矛盾。
+AMI 与 $\rho$ 的中等正相关（$r=0.619$，仅 LLM）是预期的：两者都反映了嵌入空间与人类认知结构之间的匹配程度，只是粒度不同（类别边界 vs 类别内排序）。$\mathcal{L}$ 与另两者几乎无关，进一步确认了 $\mathcal{L}$ 衡量的并非\"对齐\"，而是嵌入空间的固有几何属性。
 
 \section{与论文结论对比}
 
@@ -464,6 +548,8 @@ AMI 与 $\mathcal{L}$ 的 Pearson $r$ & +0.402 & -0.131\\
 LLM 聚类能捕捉范畴边界 & AMI $>$ chance & 确认：24 个模型全部高于随机\\
 经典嵌入最优 & word2vec/GloVe 领先 & 确认：AMI=0.46--0.55\\
 编码器匹配大 100 倍解码器 & roberta-like encoders match smaller decoders & 弱支持：差距远小于 100$\times$\\
+典型性预测 & $\rho$ $>$ chance & \textbf{确认}：McCloskey1978 上 $\rho>0$，但数值极低（$<0.2$）\\
+典型性与类别无关 & 编码器 vs 解码器无显著差异 & \textbf{确认}：跨数据集不一致，Rosch 1975/1973 为负相关\\
 LLM $\mathcal{L}$ 收敛 & $\mathcal{L}$ 仅在一个很窄范围内变化 & \textbf{强确认}：$\mathcal{L}\in[4.15,4.55]$，跨 22 个模型\\
 人类 $k$ 在曲线拐点附近 & & \textbf{确认}：$k=18$ 在边际收益递减区\\
 模型大小不影响 $\mathcal{L}$ & & \textbf{新结论}：$r=-0.121$，$p\gg0.05$\\
@@ -475,7 +561,7 @@ LLM $\mathcal{L}$ 收敛 & $\mathcal{L}$ 仅在一个很窄范围内变化 & \te
 \section{限制与讨论}
 
 \begin{enumerate}[noitemsep]
-  \item \textbf{仅 McCloskey1978 数据集：} 论文使用了 3 个数据集，我们只完整复现了 McCloskey1978（$\sim$200 个概念，18 个类别）。BERT/RoBERTa 在其他数据集上的 AMI 可能会更高。
+\item \textbf{仅 McCloskey1978 数据集：} 论文使用了 3 个数据集，我们只完整复现了 McCloskey1978（$\sim$200 个概念，18 个类别）。BERT/RoBERTa 在其他数据集上的 AMI 可能会更高。RQ2 的结果也受此限制——Rosch1973（48 条）和 Rosch1975（565 条）的数据量影响了统计显著性。
   \item \textbf{$n_{\text{init}}=100$ vs $n_{\text{init}}=10$：} 提高 $n_{\text{init}}$ 仅轻微改善结果（高度数集上提升 $<0.01$ AMI），说明论文的 $n_{\text{init}}=10$ 足够稳定。
   \item \textbf{缺少 16 个模型：} 论文使用了 40+ 个模型，我们只能复现其中 24 个（缺少 Llama、Mistral、CLIP 等）。不过由于 LLM 的 $\mathcal{L}$ 高度收敛，预计缺失模型不会改变定性结论。
   \item \textbf{$\mathcal{L}$ 对 $\beta$ 敏感：} 我们固定 $\beta=1.0$。$\beta$ 的不同取值会改变 $\mathcal{L}$ 的绝对数值，但跨模型的相对排序应保持稳定。
