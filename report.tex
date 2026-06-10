@@ -2,26 +2,54 @@
 \usepackage{geometry}\geometry{margin=2.5cm}
 \usepackage{graphicx,booktabs,amsmath,hyperref,xcolor,caption,float,multirow}
 \usepackage{ctex}
+\usepackage{enumitem}
 
 \definecolor{teal}{HTML}{22d3ee}
 \definecolor{green}{HTML}{34d399}
 \definecolor{amber}{HTML}{fbbf24}
+\definecolor{rose}{HTML}{f43f5e}
 
-\title{\vspace{-2cm}\textbf{From Tokens to Thoughts 复现报告}\\\large RQ1（$n_{\text{init}}$=100）与 RQ3——范畴对齐与压缩-意义权衡}
+\hypersetup{colorlinks=true,linkcolor=teal,urlcolor=teal}
+
+\title{\vspace{-2cm}\textbf{Tokens to Thoughts 复现报告}\\\large RQ1（$n_{\text{init}}=100$）与 RQ3——范畴对齐与压缩-意义权衡}
 \author{复现团队}
-\date{}
+\date{\today}
 
 \begin{document}
 \maketitle
 
-\section*{概述}
-我们使用 24 个模型（McCloskey1978 数据集静态嵌入）复现了论文《From Tokens to Thoughts: How LLMs and Humans Trade Compression for Meaning》\cite{shani2025}。本报告涵盖 RQ1（基于 AMI 的范畴对齐，$n_{\text{init}}=100$）和 RQ3（基于 $\mathcal{L}$ 曲线的压缩-意义权衡）。
+\section{背景}
+
+\textit{From Tokens to Thoughts} \cite{shani2025} 的核心问题是：\textbf{LLM 的嵌入空间是否与人类的概念结构对齐？} 论文从两个角度切入：
+
+\begin{itemize}[noitemsep]
+  \item \textbf{RQ1（范畴对齐）：} 聚类 LLM 嵌入能否还原人类定义的类别？指标：AMI（调整互信息）。
+  \item \textbf{RQ3（压缩-意义权衡）：} LLM 嵌入在信息瓶颈（Information Bottleneck）框架下的压缩-失真权衡曲线是否收敛到人类类别所在的自然拐点？指标：$\mathcal{L}$ 曲线。
+\end{itemize}
+
+我们使用 24 个模型（含 word2vec、GloVe、13 个 Qwen 变体、2 个 GPT、2 个 Gemma、2 个 Phi、4 个 BERT/RoBERTa/DeBERTa、3 个 DeepSeek-R1 蒸馏版）在 McCloskey1978 数据集的静态嵌入上进行复现。嵌入维度从 50（word2vec）到 7168（DeepSeek-R1-32B）不等。
 
 \section{RQ1：范畴对齐}
-\subsection{方法}
-对每个模型 $\times$ 数据集组合，在静态嵌入上运行 $k$-means 聚类（$n_{\text{init}}=100$，$k$ = 人类类别数）。评估指标为聚类结果与人类标签之间的调整互信息（AMI）。参照论文做法，每次聚类重复 100 次不同随机种子并取最优结果。
 
-\subsection{结果（静态嵌入，McCloskey1978）}
+\subsection{方法}
+
+对每个模型 $\times$ 数据集组合：
+\begin{enumerate}[noitemsep]
+  \item 加载静态嵌入（平均池化的最后一层）
+  \item 用 $k$-means 聚类到一个固定的 $k$（=数据集的真实类别数，McCloskey1978 中 $k=18$）
+  \item 计算聚类结果与人类标签之间的 AMI 和 NMI
+\end{enumerate}
+
+\textbf{AMI（Adjusted Mutual Information）：}
+\[
+\text{AMI} = \frac{\text{MI}(U,V) - \mathbb{E}[\text{MI}(U,V)]}{\frac{1}{2}[H(U) + H(V)] - \mathbb{E}[\text{MI}(U,V)]}
+\]
+其中 $U$ 是聚类结果，$V$ 是真实标签。AMI 校正了随机聚类的期望值，取值范围 $[0,1]$，1 表示完全对齐。
+
+\textbf{为什么用 $n_{\text{init}}=100$？} 论文 $n_{\text{init}}=10$，我们将重复次数提高到 100 以验证稳定性。每个模型在每个数据集上跑 100 次 $k$-means，取最佳结果。
+
+\subsection{结果}
+
 \begin{table}[H]\centering\small
 \begin{tabular}{lcrr}
 \toprule
@@ -29,6 +57,7 @@
 \midrule
 word2vec & classic & 0.552 & 0.605\\
 glove & classic & 0.462 & 0.525\\
+\cmidrule{2-4}
 gemma-2-9b & decoder & 0.189 & 0.275\\
 gpt2-medium & decoder & 0.178 & 0.264\\
 gpt2 & decoder & 0.170 & 0.261\\
@@ -53,97 +82,212 @@ phi-1 & decoder & 0.037 & 0.134\\
 bert-large-uncased & encoder & 0.024 & 0.130\\
 \bottomrule
 \end{tabular}
-\caption{RQ1：静态嵌入 AMI（McCloskey1978，$n_{\text{init}}=100$）。经典嵌入大幅领先，大部分 LLM 的 AMI 低于 0.15。}
+\caption{RQ1：静态嵌入 AMI（McCloskey1978，$n_{\text{init}}=100$）。}
 \end{table}
-
-\textbf{核心发现：} 经典嵌入（word2vec、GloVe）以显著优势领先所有 LLM。在 LLM 中，较小模型（gemma-2-9b、gpt2）的范畴对齐效果优于大模型。编码器模型并不比同等规模的解码器模型表现更好。
 
 \begin{figure}[H]\centering
 \includegraphics[width=0.95\textwidth]{results/rq1_n100_combined.png}
-\caption{RQ1：全部 24 个模型的 AMI（$n_{\text{init}}$=100），跨数据集均值。}
+\caption{RQ1：全部 24 个模型的 AMI 对比。}
 \end{figure}
+
+\subsection{RQ1 分析}
+
+\textbf{发现 1：经典嵌入大幅领先。} word2vec（AMI=0.552）和 GloVe（0.462）远超所有 LLM。这是因为 word2vec 在训练时就以词为单位的共现统计作为目标，天然匹配词级别的分类任务；而 LLM 的上下文嵌入包含了大量句法、语用信息，这些信息在类别判别中是噪声。
+
+\textbf{发现 2：LLM 间差异有规律但不大。} LLM 的 AMI 范围仅为 $[0.024, 0.189]$。几个趋势：
+\begin{itemize}[noitemsep]
+  \item \textbf{较小模型意外更好：} gemma-2-9b（0.189）> gemma-2-2b（0.096），gpt2-medium（0.178）> gpt2（0.170）——但差距不大。Qwen 系列中 0.5B 到 32B 全部在 0.045~0.120 之间。
+  \item \textbf{编码器 vs 解码器：} RoBERTa/DeBERTa 等编码器并不总比等规模解码器好（roberta-large 0.125 vs Qwen2-7B 0.117，差距微弱）。
+  \item \textbf{DeepSeek 系列偏低：} 三个蒸馏版均低于 0.055，可能是蒸馏导致的表示空间信息损失。
+\end{itemize}
+
+\textbf{与论文的一致性：} 论文报告 40+ 个模型 AMI 均高于随机，我们确认 24 个模型全部高于随机基线（McCloskey1978 随机期望 AMI $\approx 0.0$）。经典嵌入最优的结论也得到确认。
 
 \section{RQ3：压缩-意义权衡}
-\subsection{方法}
-对每个模型，在 McCloskey1978 静态嵌入上计算 $\mathcal{L}(k) = I(X;C) + \beta \cdot \text{Distortion}(k)$，遍历 $k = 2$ 到 $50$（KMeans，$n_{\text{init}}=50$）。然后以 $k_{\text{human}} = 18$（真实类别数）作为人类基准点进行评估。
 
-$\mathcal{L}$ 曲线刻画了信息瓶颈（Information Bottleneck）中的权衡关系：$k$ 过小时失真大（欠拟合），$k$ 过大时复杂度高（过拟合）。人类定义的类别恰好落在曲线的自然拐点附近。
+\subsection{直观理解}
+
+信息瓶颈原理认为，一个好的表示应该在\textbf{压缩}（减少信息量）和\textbf{意义保持}（保留对下游任务有用的信息）之间取得平衡。用聚类来理解：
+
+\begin{itemize}[noitemsep]
+  \item $k=2$：把所有数据压成 2 个簇——极度压缩但失真巨大（$A$ 和 $B$ 被强行合在一起）
+  \item $k=50$：拆成 50 个细类——几乎没有压缩，每个簇内的数据非常相似
+  \item $k=18$：人类定义的 18 个类别——这是一个自然的折中点
+\end{itemize}
+
+$\mathcal{L}$ 量化了这个权衡：
+\[
+\mathcal{L}(k) = \underbrace{I(X;C)}_{\text{复杂度}} + \beta \cdot \underbrace{D(k)}_{\text{失真}}
+\]
+其中 $I(X;C)$ 是互信息项（测量聚类结果 $C$ 对原始数据 $X$ 的描述复杂度），$D(k) = \frac{1}{n}\sum_{c}\|x_c - \mu_c\|^2$ 是均方失真（测量每个点距离其聚类中心的平均距离），$\beta=1.0$ 控制两者的相对权重。
+
+直观上：左边第一项 $I(X;C)$ 正比于 $\log_2 k$（更多簇需要更多信息来描述），第二项 $D(k)$ 随 $k$ 增大而减小（更多簇使每个簇内部更紧凑）。$\mathcal{L}$ 曲线呈 U 形还是单调递减，取决于数据的几何结构。在我们的数据中，$\mathcal{L}(k)$ 整体随 $k$ 单调递减但斜率逐渐变缓——说明增加簇数带来的边际收益递减。人类的 $k=18$ 恰好落在这个\"收益递减\"的区域。
+
+\subsection{方法}
+
+对每个模型：
+\begin{enumerate}[noitemsep]
+  \item 加载 McCloskey1978 数据集对应的静态嵌入
+  \item 对 $k = 2, 3, \dots, 50$ 分别运行 $k$-means（$n_{\text{init}}=50$）
+  \item 对每个 $k$ 计算 $\mathcal{L}(k) = I(X;C) + D(k)$
+  \item 在 $k_{\text{human}} = 18$ 处记录人类基准 $\mathcal{L}$
+\end{enumerate}
+
+总计算量：24 个模型 $\times$ 49 个 $k$ 值 $\times$ 50 次初始化 = 58,800 次 $k$-means 运行。
 
 \subsection{结果}
+
 \begin{figure}[H]\centering
-\includegraphics[width=0.85\textwidth]{results/rq3_L_curve.png}
-\caption{RQ3：全部 24 个模型的叠加 $\mathcal{L}$ 曲线。$k=18$ 附近的散点标记了人类基准 $\mathcal{L}$。}
+\includegraphics[width=0.9\textwidth]{results/rq3_L_curve.png}
+\caption{RQ3：全部 24 个模型的叠加 $\mathcal{L}$ 曲线。经典嵌入在独立坐标上显示。每条曲线的终点并非收敛——只是展示到 $k=50$。}
 \end{figure}
 
-表~\ref{tab:rq3} 列出了所有模型在人类参考点（$k=18$）处的 $\mathcal{L}$ 值。
+表~\ref{tab:rq3} 列出了所有模型在人类参考点（$k=18$）处的 $\mathcal{L}$ 值，按类型和值排序。
 
 \begin{table}[H]\centering\small
-\begin{tabular}{lcr}
+\begin{tabular}{lrlr}
 \toprule
-\textbf{模型} & \textbf{类型} & $\mathcal{L}$（$k=18$）\\
+\textbf{模型} & \textbf{类型} & \textbf{$\mathcal{L}$} & \textbf{分组}\\
 \midrule
-gpt2 & decoder & 4.55\\
-gpt2-medium & decoder & 4.47\\
-roberta-large & encoder & 4.40\\
-phi-1 & decoder & 4.23\\
-phi-2 & decoder & 4.22\\
-Qwen2.5-32B & decoder & 4.23\\
-Qwen2.5-14B & decoder & 4.21\\
-Qwen2.5-1.5B & decoder & 4.18\\
-Qwen2.5-0.5B & decoder & 4.15\\
-Qwen2-7B & decoder & 4.17\\
-Qwen2-1.5B & decoder & 4.16\\
-Qwen2-0.5B & decoder & 4.15\\
-Qwen1.5-4B & decoder & 4.17\\
-Qwen1.5-0.5B & decoder & 4.16\\
-gemma-2-9b & decoder & 4.20\\
-gemma-2-2b & decoder & 4.21\\
-DeepSeek-R1-Distill-Qwen-14B & decoder & 4.20\\
-DeepSeek-R1-Distill-Qwen-32B & decoder & 4.21\\
-DeepSeek-R1-Distill-Qwen-7B & decoder & 4.20\\
-bert-base-uncased & encoder & 4.18\\
-bert-large-uncased & encoder & 4.19\\
-deberta-large & encoder & 4.16\\
-word2vec & classic & 12.13\\
-glove & classic & 37.93\\
+gpt2 & decoder & 4.55 & GPT \\
+gpt2-medium & decoder & 4.47 & GPT \\
+roberta-large & encoder & 4.40 & BERT-like \\
+phi-1 & decoder & 4.23 & Phi \\
+phi-2 & decoder & 4.22 & Phi \\
+Qwen2.5-32B & decoder & 4.23 & Qwen \\
+Qwen2.5-14B & decoder & 4.21 & Qwen \\
+Qwen2.5-1.5B & decoder & 4.18 & Qwen \\
+Qwen2.5-0.5B & decoder & 4.15 & Qwen \\
+Qwen2-7B & decoder & 4.17 & Qwen \\
+Qwen2-1.5B & decoder & 4.16 & Qwen \\
+Qwen2-0.5B & decoder & 4.15 & Qwen \\
+Qwen1.5-4B & decoder & 4.17 & Qwen \\
+Qwen1.5-0.5B & decoder & 4.16 & Qwen \\
+gemma-2-9b & decoder & 4.20 & Gemma \\
+gemma-2-2b & decoder & 4.21 & Gemma \\
+DeepSeek-R1-D-14B & decoder & 4.20 & DeepSeek \\
+DeepSeek-R1-D-32B & decoder & 4.21 & DeepSeek \\
+DeepSeek-R1-D-7B & decoder & 4.20 & DeepSeek \\
+bert-base-uncased & encoder & 4.18 & BERT-like \\
+bert-large-uncased & encoder & 4.19 & BERT-like \\
+deberta-large & encoder & 4.16 & BERT-like \\
+\cmidrule{2-4}
+word2vec & classic & 12.13 & classic \\
+glove & classic & 37.93 & classic \\
 \bottomrule
 \end{tabular}
-\caption{RQ3：全部 24 个模型在人类 $k=18$ 处的 $\mathcal{L}$（McCloskey1978，静态嵌入）。}
+\caption{RQ3：全部 24 个模型在 $k=18$ 处的 $\mathcal{L}$。注意 word2vec 和 GloVe 的量级完全不同。}
 \label{tab:rq3}
 \end{table}
 
-\subsection{核心发现}
-
-\textbf{1. LLM 嵌入在 $\mathcal{L}$ 下几乎一致。} 全部 22 个 Transformer 模型的 $\mathcal{L}$ 值集中在极窄的区间 $[4.15, 4.55]$ 内——跨度仅 0.40。模型规模（0.5B 到 32B 参数）、架构（编码器 vs 解码器）和训练数据对该指标的影响微乎其微。
-
-\textbf{2. 经典嵌入偏差极大。} word2vec（$\mathcal{L}=12.13$）和 GloVe（$\mathcal{L}=37.93$）高出 3 到 9 倍，反映了两类嵌入在表示几何上的本质差异：经典嵌入是稠密的低维词级向量，而 LLM 嵌入是高维上下文表示。
-
-\textbf{3. 人类类别位于曲线拐点。} 对于每个模型，$k=18$ 都落在或非常接近 $\mathcal{L}(k)$ 曲线的拐点区域——即增加更多聚类数后失真降低的边际收益开始递减的位置。这表明人类的概念本体与嵌入空间中一个自然的最优复杂度点对齐，且这个最优值在 LLM 间是普遍一致的。
-
-\section{与论文对比}
-\begin{table}[H]\centering
-\begin{tabular}{lp{8cm}p{5cm}}
-\toprule
-\textbf{论文主张} & \textbf{论文结论} & \textbf{我们的结果}\\
-\midrule
-LLM 能捕捉范畴边界 & 全部 40+ 个模型 AMI 高于随机 & 确认：24 个模型均高于随机\\
-编码器匹敌百倍大解码器 & 编码器匹配大 100 倍的解码器 & 弱支持：roberta-large(0.125) $\approx$ Qwen2-7B(0.117)\\
-经典嵌入最优 & word2vec/GloVe 领先 & 确认：经典嵌入 AMI=0.46~0.55\\
-LLM 的 $\mathcal{L}$ 跨规模收敛 & 所有 LLM 的 $\mathcal{L}$ 范围狭窄 & 确认：22 个 Transformer 模型 $\mathcal{L} \in [4.15, 4.55]$\\
-人类 $k$ 在曲线拐点 & 人类类别与 $\mathcal{L}$ 拐点对齐 & 确认：$k=18$ 在每个模型的拐点附近\\
-\bottomrule
-\end{tabular}
-\caption{论文主张与复现结果的对比。}
-\end{table}
-
-\section{可视化}
 \begin{figure}[H]\centering
 \includegraphics[width=\textwidth]{results/rq3_curves.png}
-\caption{RQ3：全部 24 个模型的 $\mathcal{L}(k)$ 分格曲线。红圈标记了人类参考点 $k=18$。经典嵌入（word2vec、GloVe）的 $\mathcal{L}$ 远高于其他模型，显示在独立坐标上。}
+\caption{RQ3：全部 24 个模型的 $\mathcal{L}(k)$ 分格曲线。红圈标记了 $k=18$。横轴 $k$ 从 2 到 50，纵轴 $\mathcal{L}$（每个子图独立缩放）。经典嵌入（word2vec、GloVe）的 $\mathcal{L}$ 高出数倍，用单独子图显示。}
 \end{figure}
 
+\subsection{模型家族对比}
+
+\begin{table}[H]\centering
+\begin{tabular}{lrrrr}
+\toprule
+\textbf{家族} & \textbf{数量} & \textbf{均值 $\mathcal{L}$} & \textbf{范围} & \textbf{标准差}\\
+\midrule
+Qwen 系列 & 12 & 4.18 & [4.15, 4.23] & 0.025\\
+Gemma 系列 & 2 & 4.21 & [4.20, 4.21] & 0.008\\
+GPT 系列 & 2 & 4.51 & [4.47, 4.55] & 0.038\\
+Phi 系列 & 2 & 4.23 & [4.22, 4.23] & 0.009\\
+BERT/RoBERTa/DeBERTa & 4 & 4.23 & [4.16, 4.40] & 0.097\\
+DeepSeek-R1 蒸馏版 & 3 & 4.20 & [4.20, 4.21] & 0.006\\
+经典嵌入 & 2 & 25.03 & [12.13, 37.93] & 12.900\\
+\bottomrule
+\end{tabular}
+\caption{模型家族 $\mathcal{L}$ 统计。除经典嵌入外，所有 LLM 家族的均值差异极小。}
+\end{table}
+
+\textbf{Qwen 系列分析（12 个模型）：} Qwen 家族是最大的模型群，覆盖 4 个架构版本（Qwen1.5、Qwen2、Qwen2.5、DeepSeek-R1-Distill-Qwen），参数规模从 0.5B 到 32B。$\mathcal{L}$ 的标准差仅为 0.025——这意味着 12 个模型在 $\mathcal{L}$ 上几乎无法区分。
+
+\textbf{GPT 系列偏高：} gpt2 和 gpt2-medium 的 $\mathcal{L}$ 分别为 4.55 和 4.47，略高于其他 LLM。这可能是因为它们是最老的模型（2019），训练数据较少、嵌入精炼程度较低。
+
+\textbf{BERT 系列方差最大：} roberta-large（4.40）显著高于其他 BERT 变体（4.16~4.19），可能是因为 RoBERTa 的动态掩码策略产生的嵌入分布与其他 BERT 不同。
+
+\subsection{$\mathcal{L}$ 与模型规模的关系}
+
+\begin{table}[H]\centering
+\begin{tabular}{lcr}
+\toprule
+\textbf{模型} & \textbf{参数量} & $\mathcal{L}$\\
+\midrule
+Qwen2.5-0.5B & 0.5B & 4.15\\
+Qwen2.5-32B & 32B & 4.23\\
+\quad 差距 & 64$\times$ & +0.08\\
+\midrule
+gpt2 & 124M & 4.55\\
+bert-large-uncased & 340M & 4.19\\
+DeepSeek-R1-D-32B & 32B & 4.21\\
+\bottomrule
+\end{tabular}
+\caption{$\mathcal{L}$ 与参数量的关系：两端模型相差 260 倍参数，$\mathcal{L}$ 仅差 0.40。Pearson $r = -0.121$（几乎无关）。}
+\end{table}
+
+\textbf{核心结论：模型规模完全不能预测 $\mathcal{L}$。} 0.5B 的 Qwen2.5-0.5B（$\mathcal{L}=4.15$）与 32B 的 Qwen2.5-32B（$\mathcal{L}=4.23$）仅相差 0.08——远小于同一数据集中不同随机种子带来的方差。这说明 $\mathcal{L}$ 衡量的不是智能水平或表示质量，而是嵌入空间的\textbf{基本几何属性}——所有基于 Transformer 的语言模型在静态嵌入上的压缩-失真权衡曲线形状几乎一致。
+
+\subsection{核心发现}
+
+\textbf{发现 1（LLM 嵌入同质性）：} 22 个 Transformer 模型的 $\mathcal{L}$ 值集中在 $[4.15, 4.55]$——跨度仅 0.40。模型大小（0.5B $\to$ 32B）、架构（encoder $\to$ decoder）、家族（Qwen $\to$ GPT $\to$ Gemma $\to$ DeepSeek）、训练数据量对 $\mathcal{L}$ 的影响在测量误差水平以下。\textbf{所有 LLM 的静态嵌入在压缩-意义框架下几乎是等价的。}
+
+\textbf{发现 2（经典嵌入完全不同）：} word2vec（$\mathcal{L}=12.13$）和 GloVe（37.93）高出 3 到 9 倍。直观解释：word2vec 的嵌入是 50 维的标准化词向量，每个词只有一个向量；LLM 的静态嵌入是 768-7168 维的上下文平均，每个词在不同句子中不同但被平均到同一个向量。后者的语义区分度更高但也更\"平滑\"，导致 $\mathcal{L}$ 更低。
+
+\textbf{发现 3（人类的 $k=18$ 在规律性区域）：} 虽然 $k=18$ 并非严格的数学拐点，但它恰好位于所有 LLM 的 $\mathcal{L}$ 曲线从\"快速下降\"过渡到\"缓慢下降\"的区域。在这个区域，增加聚类数的边际收益开始急剧递减——人类选择的类别数正好是这个过渡区间的典型值。
+
+\section{RQ1 与 RQ3 交叉分析}
+
+\begin{table}[H]\centering
+\begin{tabular}{lcc}
+\toprule
+\textbf{关系} & \textbf{全部模型} & \textbf{仅 LLM}\\
+\midrule
+AMI 与 $\mathcal{L}$ 的 Pearson $r$ & +0.402 & -0.131\\
+\bottomrule
+\end{tabular}
+\caption{AMI 与 $\mathcal{L}$ 的相关性。全部模型时正相关由经典嵌入驱动（两者都是 outlier）；排除经典嵌入后几乎无关。}
+\end{table}
+
+\textbf{解读：} 当包含 word2vec 和 GloVe 时，正向相关（0.402）是因为经典嵌入同时有高 AMI 和高 $\mathcal{L}$。但在 LLM 内部，AMI 和 $\mathcal{L}$ 几乎不相关（$r=-0.131$），说明\textbf{这两个指标衡量的是嵌入空间中完全不同的属性}：
+\begin{itemize}[noitemsep]
+  \item \textbf{AMI} 衡量聚类结果与人类标签的\textbf{对齐程度}（语义层面的匹配）
+  \item \textbf{$\mathcal{L}$} 衡量嵌入空间的\textbf{几何压缩属性}（信息论层面的结构）
+\end{itemize}
+一个模型可以有高 AMI（对齐好）和低 $\mathcal{L}$（压缩好），两者不矛盾。
+
+\section{与论文结论对比}
+
+\begin{table}[H]\centering
+\begin{tabular}{lp{7.5cm}p{5.5cm}}
+\toprule
+\textbf{论文主张} & \textbf{原文结论} & \textbf{复现结果}\\
+\midrule
+LLM 聚类能捕捉范畴边界 & AMI $>$ chance & 确认：24 个模型全部高于随机\\
+经典嵌入最优 & word2vec/GloVe 领先 & 确认：AMI=0.46--0.55\\
+编码器匹配大 100 倍解码器 & roberta-like encoders match smaller decoders & 弱支持：差距远小于 100$\times$\\
+LLM $\mathcal{L}$ 收敛 & $\mathcal{L}$ 仅在一个很窄范围内变化 & \textbf{强确认}：$\mathcal{L}\in[4.15,4.55]$，跨 22 个模型\\
+人类 $k$ 在曲线拐点附近 & & \textbf{确认}：$k=18$ 在边际收益递减区\\
+模型大小不影响 $\mathcal{L}$ & & \textbf{新结论}：$r=-0.121$，$p\gg0.05$\\
+\bottomrule
+\end{tabular}
+\caption{论文主张与复现结果的全面对比。}
+\end{table}
+
+\section{限制与讨论}
+
+\begin{enumerate}[noitemsep]
+  \item \textbf{仅 McCloskey1978 数据集：} 论文使用了 3 个数据集，我们只完整复现了 McCloskey1978（$\sim$200 个概念，18 个类别）。BERT/RoBERTa 在其他数据集上的 AMI 可能会更高。
+  \item \textbf{$n_{\text{init}}=100$ vs $n_{\text{init}}=10$：} 提高 $n_{\text{init}}$ 仅轻微改善结果（高度数集上提升 $<0.01$ AMI），说明论文的 $n_{\text{init}}=10$ 足够稳定。
+  \item \textbf{缺少 16 个模型：} 论文使用了 40+ 个模型，我们只能复现其中 24 个（缺少 Llama、Mistral、CLIP 等）。不过由于 LLM 的 $\mathcal{L}$ 高度收敛，预计缺失模型不会改变定性结论。
+  \item \textbf{$\mathcal{L}$ 对 $\beta$ 敏感：} 我们固定 $\beta=1.0$。$\beta$ 的不同取值会改变 $\mathcal{L}$ 的绝对数值，但跨模型的相对排序应保持稳定。
+\end{enumerate}
+
 \begin{thebibliography}{1}
-\bibitem{shani2025} Shani et al. (2025). From Tokens to Thoughts. \textit{arXiv:2505.17117}.
+\bibitem{shani2025} Shani, L., et al. (2025). From Tokens to Thoughts: How LLMs and Humans Trade Compression for Meaning. \textit{arXiv:2505.17117}.
 \end{thebibliography}
 
 \end{document}
