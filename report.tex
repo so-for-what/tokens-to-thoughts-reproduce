@@ -1,32 +1,31 @@
 \documentclass[11pt,a4paper]{article}
 \usepackage{geometry}\geometry{margin=2.5cm}
 \usepackage{graphicx,booktabs,amsmath,hyperref,xcolor,caption,float,multirow}
-\usepackage[T1]{fontenc}
-\usepackage{lmodern}
+\usepackage{ctex}
 
 \definecolor{teal}{HTML}{22d3ee}
 \definecolor{green}{HTML}{34d399}
 \definecolor{amber}{HTML}{fbbf24}
 
-\title{\vspace{-2cm}\textbf{From Tokens to Thoughts: Reproduction Report}\\\large RQ1 ($n_{\text{init}}$=100) \& RQ3 -- Categorical Alignment and Compression-Meaning Trade-off}
-\author{Reproduction Team}
+\title{\vspace{-2cm}\textbf{From Tokens to Thoughts 复现报告}\\\large RQ1（$n_{\text{init}}$=100）与 RQ3——范畴对齐与压缩-意义权衡}
+\author{复现团队}
 \date{}
 
 \begin{document}
 \maketitle
 
-\section*{Overview}
-We reproduce \textit{From Tokens to Thoughts: How LLMs and Humans Trade Compression for Meaning} \cite{shani2025} using 24 models (static embeddings on McCloskey1978). This report covers RQ1 (categorical alignment via AMI, with $n_{\text{init}}=100$) and RQ3 (compression-meaning trade-off via $\mathcal{L}$ curves).
+\section*{概述}
+我们使用 24 个模型（McCloskey1978 数据集静态嵌入）复现了论文《From Tokens to Thoughts: How LLMs and Humans Trade Compression for Meaning》\cite{shani2025}。本报告涵盖 RQ1（基于 AMI 的范畴对齐，$n_{\text{init}}=100$）和 RQ3（基于 $\mathcal{L}$ 曲线的压缩-意义权衡）。
 
-\section{RQ1: Categorical Alignment}
-\subsection{Method}
-For each model $\times$ dataset, $k$-means clustering ($n_{\text{init}}=100$, $k$ = human category count) on static embeddings. Metric: Adjusted Mutual Information (AMI) vs. human labels. Following the paper, each clustering is repeated 100 times with different random seeds and the best result is used.
+\section{RQ1：范畴对齐}
+\subsection{方法}
+对每个模型 $\times$ 数据集组合，在静态嵌入上运行 $k$-means 聚类（$n_{\text{init}}=100$，$k$ = 人类类别数）。评估指标为聚类结果与人类标签之间的调整互信息（AMI）。参照论文做法，每次聚类重复 100 次不同随机种子并取最优结果。
 
-\subsection{Results (Static Embeddings, McCloskey1978)}
+\subsection{结果（静态嵌入，McCloskey1978）}
 \begin{table}[H]\centering\small
 \begin{tabular}{lcrr}
 \toprule
-\textbf{Model} & \textbf{Type} & \textbf{AMI} & \textbf{NMI}\\
+\textbf{模型} & \textbf{类型} & \textbf{AMI} & \textbf{NMI}\\
 \midrule
 word2vec & classic & 0.552 & 0.605\\
 glove & classic & 0.462 & 0.525\\
@@ -54,34 +53,34 @@ phi-1 & decoder & 0.037 & 0.134\\
 bert-large-uncased & encoder & 0.024 & 0.130\\
 \bottomrule
 \end{tabular}
-\caption{RQ1: Static embedding AMI (McCloskey1978) with $n_{\text{init}}=100$. Classic embeddings dominate; most LLMs show AMI $<0.15$.}
+\caption{RQ1：静态嵌入 AMI（McCloskey1978，$n_{\text{init}}=100$）。经典嵌入大幅领先，大部分 LLM 的 AMI 低于 0.15。}
 \end{table}
 
-\textbf{Key finding:} Classic embeddings (word2vec, GloVe) outperform all LLMs by a wide margin. Among LLMs, smaller models (gemma-2-9b, gpt2) show better categorical alignment than larger ones. Encoder models do not consistently outperform decoders of similar size.
+\textbf{核心发现：} 经典嵌入（word2vec、GloVe）以显著优势领先所有 LLM。在 LLM 中，较小模型（gemma-2-9b、gpt2）的范畴对齐效果优于大模型。编码器模型并不比同等规模的解码器模型表现更好。
 
 \begin{figure}[H]\centering
 \includegraphics[width=0.95\textwidth]{results/rq1_n100_combined.png}
-\caption{RQ1: AMI for all 24 models ($n_{\text{init}}$=100), averaged across datasets.}
+\caption{RQ1：全部 24 个模型的 AMI（$n_{\text{init}}$=100），跨数据集均值。}
 \end{figure}
 
-\section{RQ3: Compression-Meaning Trade-off}
-\subsection{Method}
-For each model, we compute $\mathcal{L}(k) = I(X;C) + \beta \cdot \text{Distortion}(k)$ over $k = 2..50$ (KMeans, $n_{\text{init}}=50$) on McCloskey1978 static embeddings. We then evaluate the human baseline at $k_{\text{human}} = 18$ (the ground-truth category count).
+\section{RQ3：压缩-意义权衡}
+\subsection{方法}
+对每个模型，在 McCloskey1978 静态嵌入上计算 $\mathcal{L}(k) = I(X;C) + \beta \cdot \text{Distortion}(k)$，遍历 $k = 2$ 到 $50$（KMeans，$n_{\text{init}}=50$）。然后以 $k_{\text{human}} = 18$（真实类别数）作为人类基准点进行评估。
 
-The $\mathcal{L}$ curve captures the Information Bottleneck trade-off: at low $k$, distortion is high (under-fitting); at high $k$, complexity is high (over-fitting). The human-defined categories sit at a natural inflection point.
+$\mathcal{L}$ 曲线刻画了信息瓶颈（Information Bottleneck）中的权衡关系：$k$ 过小时失真大（欠拟合），$k$ 过大时复杂度高（过拟合）。人类定义的类别恰好落在曲线的自然拐点附近。
 
-\subsection{Results}
+\subsection{结果}
 \begin{figure}[H]\centering
 \includegraphics[width=0.85\textwidth]{results/rq3_L_curve.png}
-\caption{RQ3: Combined $\mathcal{L}$ curves for all 24 models. The horizontal scatter near $k=18$ marks the human benchmark $\mathcal{L}$.}
+\caption{RQ3：全部 24 个模型的叠加 $\mathcal{L}$ 曲线。$k=18$ 附近的散点标记了人类基准 $\mathcal{L}$。}
 \end{figure}
 
-Table~\ref{tab:rq3} shows $\mathcal{L}$ at the human reference point ($k=18$) for all models.
+表~\ref{tab:rq3} 列出了所有模型在人类参考点（$k=18$）处的 $\mathcal{L}$ 值。
 
 \begin{table}[H]\centering\small
 \begin{tabular}{lcr}
 \toprule
-\textbf{Model} & \textbf{Type} & $\mathcal{L}$ at $k=18$\\
+\textbf{模型} & \textbf{类型} & $\mathcal{L}$（$k=18$）\\
 \midrule
 gpt2 & decoder & 4.55\\
 gpt2-medium & decoder & 4.47\\
@@ -109,38 +108,38 @@ word2vec & classic & 12.13\\
 glove & classic & 37.93\\
 \bottomrule
 \end{tabular}
-\caption{RQ3: $\mathcal{L}$ at human $k=18$ for all 24 models (McCloskey1978, static embeddings).}
+\caption{RQ3：全部 24 个模型在人类 $k=18$ 处的 $\mathcal{L}$（McCloskey1978，静态嵌入）。}
 \label{tab:rq3}
 \end{table}
 
-\subsection{Key Findings}
+\subsection{核心发现}
 
-\textbf{1. LLM embeddings are nearly identical under $\mathcal{L}$.} All 22 transformer models cluster in an extremely narrow range $\mathcal{L} \in [4.15, 4.55]$ — a span of just 0.40. Model size (0.5B to 32B parameters), architecture (encoder vs. decoder), and training data have negligible impact on this metric.
+\textbf{1. LLM 嵌入在 $\mathcal{L}$ 下几乎一致。} 全部 22 个 Transformer 模型的 $\mathcal{L}$ 值集中在极窄的区间 $[4.15, 4.55]$ 内——跨度仅 0.40。模型规模（0.5B 到 32B 参数）、架构（编码器 vs 解码器）和训练数据对该指标的影响微乎其微。
 
-\textbf{2. Classic embeddings diverge sharply.} word2vec ($\mathcal{L}=12.13$) and GloVe ($\mathcal{L}=37.93$) score 3--9$\times$ higher, reflecting their fundamentally different representational geometry: dense, low-dimensional word-level vectors vs. high-dimensional contextual representations.
+\textbf{2. 经典嵌入偏差极大。} word2vec（$\mathcal{L}=12.13$）和 GloVe（$\mathcal{L}=37.93$）高出 3 到 9 倍，反映了两类嵌入在表示几何上的本质差异：经典嵌入是稠密的低维词级向量，而 LLM 嵌入是高维上下文表示。
 
-\textbf{3. Human categories lie at the knee.} For every model, $k=18$ falls at or very near the inflection point of the $\mathcal{L}(k)$ curve — the region where adding more clusters yields diminishing returns in distortion reduction. This suggests the human conceptual ontology aligns with a natural optimal complexity in the embedding space, and that this optimum is universal across LLMs.
+\textbf{3. 人类类别位于曲线拐点。} 对于每个模型，$k=18$ 都落在或非常接近 $\mathcal{L}(k)$ 曲线的拐点区域——即增加更多聚类数后失真降低的边际收益开始递减的位置。这表明人类的概念本体与嵌入空间中一个自然的最优复杂度点对齐，且这个最优值在 LLM 间是普遍一致的。
 
-\section{Comparison with Paper}
+\section{与论文对比}
 \begin{table}[H]\centering
 \begin{tabular}{lp{8cm}p{5cm}}
 \toprule
-\textbf{Claim} & \textbf{Paper} & \textbf{Ours}\\
+\textbf{论文主张} & \textbf{论文结论} & \textbf{我们的结果}\\
 \midrule
-LLMs capture category boundaries & AMI $>$ chance for all 40+ models & Confirmed: all 24 models above chance\\
-Encoders match larger decoders & Encoders match decoders 100$\times$ larger & Weak support: roberta-large (0.125) $\approx$ Qwen2-7B (0.117)\\
-Classic embeddings best & word2vec/GloVe lead & Confirmed: AMI=0.46--0.55 for classic\\
-LLM $\mathcal{L}$ converges across scales & $\mathcal{L}$ narrow range for all LLMs & Confirmed: $\mathcal{L} \in [4.15, 4.55]$ for all 22 transformer models\\
-Human $k$ at curve knee & Human categories align with $\mathcal{L}$ inflection & Confirmed: $k=18$ at or near knee for every model\\
+LLM 能捕捉范畴边界 & 全部 40+ 个模型 AMI 高于随机 & 确认：24 个模型均高于随机\\
+编码器匹敌百倍大解码器 & 编码器匹配大 100 倍的解码器 & 弱支持：roberta-large(0.125) $\approx$ Qwen2-7B(0.117)\\
+经典嵌入最优 & word2vec/GloVe 领先 & 确认：经典嵌入 AMI=0.46~0.55\\
+LLM 的 $\mathcal{L}$ 跨规模收敛 & 所有 LLM 的 $\mathcal{L}$ 范围狭窄 & 确认：22 个 Transformer 模型 $\mathcal{L} \in [4.15, 4.55]$\\
+人类 $k$ 在曲线拐点 & 人类类别与 $\mathcal{L}$ 拐点对齐 & 确认：$k=18$ 在每个模型的拐点附近\\
 \bottomrule
 \end{tabular}
-\caption{Summary of paper claims vs. our reproduction findings.}
+\caption{论文主张与复现结果的对比。}
 \end{table}
 
-\section{Visualization}
+\section{可视化}
 \begin{figure}[H]\centering
 \includegraphics[width=\textwidth]{results/rq3_curves.png}
-\caption{RQ3: Individual $\mathcal{L}(k)$ curves for all 24 models. The red-circled point marks the human $k=18$ reference. Classic embeddings (word2vec, GloVe) show much higher $\mathcal{L}$ and are on separate axes.}
+\caption{RQ3：全部 24 个模型的 $\mathcal{L}(k)$ 分格曲线。红圈标记了人类参考点 $k=18$。经典嵌入（word2vec、GloVe）的 $\mathcal{L}$ 远高于其他模型，显示在独立坐标上。}
 \end{figure}
 
 \begin{thebibliography}{1}
