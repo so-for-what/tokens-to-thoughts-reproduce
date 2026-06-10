@@ -1,8 +1,11 @@
 \documentclass[11pt,a4paper]{article}
 \usepackage{geometry}\geometry{margin=2.5cm}
-\usepackage{graphicx,booktabs,amsmath,hyperref,xcolor,caption,float,multirow}
+\usepackage{graphicx,booktabs,amsmath,amssymb,hyperref,xcolor,caption,float,multirow}
 \usepackage{ctex}
 \usepackage{enumitem}
+\usepackage{amsthm}
+
+\newtheorem{theorem}{定理}
 
 \definecolor{teal}{HTML}{22d3ee}
 \definecolor{green}{HTML}{34d399}
@@ -11,7 +14,11 @@
 
 \hypersetup{colorlinks=true,linkcolor=teal,urlcolor=teal}
 
-\title{\vspace{-2cm}\textbf{Tokens to Thoughts 复现报告}\\\large RQ1（$n_{\text{init}}=100$）与 RQ3——范畴对齐与压缩-意义权衡}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\KL}{\operatorname{D_{KL}}}
+\newcommand{\argmin}{\operatorname{argmin}}
+
+\title{\vspace{-2cm}\textbf{Tokens to Thoughts 复现报告}\\\large 信息论视角下的 RQ1 与 RQ3——范畴对齐与压缩-意义权衡}
 \author{复现团队}
 \date{\today}
 
@@ -29,6 +36,118 @@
 
 我们使用 24 个模型（含 word2vec、GloVe、13 个 Qwen 变体、2 个 GPT、2 个 Gemma、2 个 Phi、4 个 BERT/RoBERTa/DeBERTa、3 个 DeepSeek-R1 蒸馏版）在 McCloskey1978 数据集的静态嵌入上进行复现。嵌入维度从 50（word2vec）到 7168（DeepSeek-R1-32B）不等。
 
+\section{信息论基础}
+
+本节从信息论第一原理出发，逐步推导本报告使用的全部信息论度量，为后续的实验分析提供严格的数学基础。
+
+\subsection{熵（Entropy）}
+
+\textbf{自信息}是信息论最基本的量。对于一个离散随机变量 $X \sim p(x)$，事件 $X=x$ 的自信息定义为：
+\[
+I(x) = \log_2 \frac{1}{p(x)} = -\log_2 p(x)
+\]
+单位为比特。自信息刻画了观察到该事件所获得的"惊讶度"——发生概率越低的事件，自信息越大。
+
+\textbf{熵}（Shannon entropy）是自信息的期望值，描述了随机变量 $X$ 的平均不确定性：
+\[
+H(X) = \E_{X}\left[-\log_2 p(X)\right] = -\sum_{x \in \mathcal{X}} p(x) \log_2 p(x)
+\tag{1}
+\]
+其中约定 $0\log_2 0 = 0$。熵具有以下基本性质：
+\begin{itemize}[noitemsep]
+  \item \textbf{非负性：} $H(X) \geq 0$，当且仅当 $X$ 为确定性变量时取等。
+  \item \textbf{上界：} $H(X) \leq \log_2 |\mathcal{X}|$，在均匀分布时取等（最大熵原理）。
+  \item \textbf{凸性：} $H(X)$ 是 $p(x)$ 的凹函数。
+\end{itemize}
+
+\textbf{联合熵}描述一对随机变量 $(X,Y) \sim p(x,y)$ 的总不确定性：
+\[
+H(X,Y) = -\sum_{x \in \mathcal{X}} \sum_{y \in \mathcal{Y}} p(x,y) \log_2 p(x,y)
+\tag{2}
+\]
+
+\textbf{条件熵}是在已知 $Y$ 的条件下 $X$ 剩余的不确定性：
+\[
+H(X \mid Y) = \E_Y\left[H(X \mid Y=y)\right] = -\sum_{y} p(y) \sum_{x} p(x \mid y) \log_2 p(x \mid y)
+\tag{3}
+\]
+
+三者通过\textbf{链式法则}相联系：
+\[
+H(X,Y) = H(X) + H(Y \mid X) = H(Y) + H(X \mid Y)
+\tag{4}
+\]
+
+\subsection{互信息（Mutual Information）}
+
+\textbf{互信息}衡量两个随机变量 $X$ 和 $Y$ 之间相互包含的信息量——即知道 $Y$ 能减少 $X$ 的不确定性的程度：
+\[
+I(X;Y) = H(X) - H(X \mid Y)
+\tag{5}
+\]
+
+由链式法则（式~4）可得等价形式：
+\[
+I(X;Y) = H(X) + H(Y) - H(X,Y)
+\tag{6}
+\]
+
+互信息也可以直接从联合分布和边缘分布写为\textbf{KL 散度}形式：
+\[
+I(X;Y) = \sum_{x,y} p(x,y) \log_2 \frac{p(x,y)}{p(x)p(y)}
+       = \KL\bigl(p(x,y) \,\|\, p(x)p(y)\bigr)
+\tag{7}
+\]
+
+这个形式揭示了互信息的本质：$I(X;Y)$ 衡量联合分布 $p(x,y)$ 与独立假设 $p(x)p(y)$ 之间的\textbf{KL 散度}。当 $X$ 和 $Y$ 独立时，$I(X;Y)=0$；当 $X$ 完全决定 $Y$ 时（或反之），互信息达到最大。
+
+互信息的性质：
+\begin{itemize}[noitemsep]
+  \item \textbf{对称性：} $I(X;Y) = I(Y;X)$
+  \item \textbf{非负性：} $I(X;Y) \geq 0$，当且仅当 $X$ 与 $Y$ 独立时取等
+  \item \textbf{上界：} $I(X;Y) \leq \min\{H(X), H(Y)\}$
+\end{itemize}
+
+\subsection{数据处理不等式}
+
+\textbf{数据处理不等式}（Data Processing Inequality, DPI）是信息论中最重要的定理之一，它约束了信息在级联处理中的流向：
+
+\begin{theorem}[Data Processing Inequality]
+  若 $X \to Y \to Z$ 构成马尔可夫链（即 $p(x,z \mid y) = p(x \mid y)p(z \mid y)$），则
+  \[
+  I(X;Y) \geq I(X;Z)
+  \tag{8}
+  \]
+  换言之，任何对数据的后处理都不能增加它包含的原始信息。
+\end{theorem}
+
+本报告的实验涉及以下马尔可夫链：
+\[
+\text{原始文本} \to \text{LLM 嵌入} \to k\text{-means 聚类} \to \text{类别标签}
+\]
+
+DPI 保证了 $I(\text{原始文本}; \text{类别标签}) \geq I(\text{嵌入}; \text{类别标签}) \geq I(\text{聚类}; \text{类别标签})$——聚类的过程只会丢失信息而不会增加信息。这正是 RQ3 的核心：在压缩（通过 $k$-means 减少信息量）和保留意义（保留对分类有用的信息）之间取得平衡。
+
+\subsection{信息瓶颈原理}
+
+\textbf{信息瓶颈}（Information Bottleneck, IB）\cite{tishby2000} 是一个统一的信息论框架，用于寻找一个随机变量 $T$（称为\textbf{瓶颈变量}或表示），使得 $T$ 在尽可能压缩输入 $X$ 的同时，保留对目标 $Y$ 的预测能力：
+
+\[
+\min_{p(t \mid x)} \; \mathcal{L}_{\text{IB}} = I(X;T) - \beta I(T;Y)
+\tag{9}
+\]
+
+其中：
+\begin{itemize}[noitemsep]
+  \item $I(X;T)$ 是\textbf{压缩项}（rate），衡量 $T$ 保留了 $X$ 中的多少信息
+  \item $I(T;Y)$ 是\textbf{意义项}（distortion/ relevance），衡量 $T$ 对预测 $Y$ 的有用程度
+  \item $\beta \geq 0$ 是\textbf{拉格朗日乘子}，控制压缩与意义的相对权重
+\end{itemize}
+
+当 $\beta \to 0$ 时，最优解退化为将所有 $x$ 映射到同一个 $t$（最大压缩、零意义）；当 $\beta \to \infty$ 时，最优解退化为恒等映射（无压缩、保全部信息）。IB 框架的关键洞察是：\textbf{对于给定的数据分布，存在一条由 $\beta$ 参数化的最优压缩-意义曲线}——称为\textbf{IB 曲线}（rate-distortion 曲线），每个 $\beta$ 对应曲线上一个 Pareto 最优的点。
+
+IB 框架与 $k$-means 聚类的联系见于 \cite{slonim2000}：当 $T$ 是离散的类别变量（即聚类结果）、且失真度量采用均方误差时，IB 目标退化为经典 $k$-means 的正则化形式。这为我们使用 $k$-means 近似求解 IB 问题提供了理论依据。
+
 \section{RQ1：范畴对齐}
 
 \subsection{方法}
@@ -40,13 +159,48 @@
   \item 计算聚类结果与人类标签之间的 AMI 和 NMI
 \end{enumerate}
 
-\textbf{AMI（Adjusted Mutual Information）：}
-\[
-\text{AMI} = \frac{\text{MI}(U,V) - \mathbb{E}[\text{MI}(U,V)]}{\frac{1}{2}[H(U) + H(V)] - \mathbb{E}[\text{MI}(U,V)]}
-\]
-其中 $U$ 是聚类结果，$V$ 是真实标签。AMI 校正了随机聚类的期望值，取值范围 $[0,1]$，1 表示完全对齐。
+\subsection{AMI 的严格推导}
 
-\textbf{为什么用 $n_{\text{init}}=100$？} 论文 $n_{\text{init}}=10$，我们将重复次数提高到 100 以验证稳定性。每个模型在每个数据集上跑 100 次 $k$-means，取最佳结果。
+\textbf{互信息 MI} 衡量聚类结果 $U$ 与真实标签 $V$ 之间的关联。给定 $n$ 个样本，设 $U$ 有 $r$ 个簇、$V$ 有 $c$ 个类别，定义\textbf{列联表}（contingency table）：$n_{ij}$ 为同时属于 $U$ 的簇 $i$ 和 $V$ 的类别 $j$ 的样本数；$a_i = \sum_j n_{ij}$ 为簇 $i$ 的总数，$b_j = \sum_i n_{ij}$ 为类别 $j$ 的总数。
+
+由此构造经验概率分布：
+\[
+p(i,j) = \frac{n_{ij}}{n},\quad
+p_U(i) = \frac{a_i}{n},\quad
+p_V(j) = \frac{b_j}{n}
+\]
+
+代入互信息的定义（式~6）：
+\[
+\text{MI}(U,V) = \sum_{i=1}^{r} \sum_{j=1}^{c} \frac{n_{ij}}{n} \log_2 \frac{n_{ij} / n}{(a_i/n)(b_j/n)}
+            = \sum_{i,j} \frac{n_{ij}}{n} \log_2 \frac{n_{ij} \cdot n}{a_i \cdot b_j}
+\tag{10}
+\]
+
+式~10 是 MI 的另一种等价形式，在聚类评估中被广泛使用。然而，MI 有一个严重缺陷：即使 $U$ 和 $V$ 完全独立（随机分类），由于有限样本效应，$n_{ij}$ 的期望值 $\E[n_{ij}] = a_i b_j / n$ 未必等于所有实际观测值，因此 $\E[\text{MI}] > 0$。也就是说，\textbf{随机分类也能得到正值的 MI}。
+
+\textbf{AMI}（Adjusted Mutual Information）\cite{vinh2009} 通过减去随机分类的期望值来校正这一偏差：
+\[
+\text{AMI} = \frac{\text{MI}(U,V) - \E[\text{MI}(U,V)]}{\frac{1}{2}[H(U) + H(V)] - \E[\text{MI}(U,V)]}
+\tag{11}
+\]
+
+其中：
+\[
+H(U) = -\sum_{i=1}^{r} \frac{a_i}{n} \log_2 \frac{a_i}{n}, \quad
+H(V) = -\sum_{j=1}^{c} \frac{b_j}{n} \log_2 \frac{b_j}{n}
+\tag{12}
+\]
+
+分母 $\frac{1}{2}[H(U) + H(V)]$ 是 $H(U,V)$ 的上界（因为 $H(U,V) \leq H(U) + H(V)$），用其作为归一化确保 AMI $\in [0,1]$。
+
+\textbf{期望互信息} $\E[\text{MI}(U,V)]$ 的推导需利用超几何分布：在保持 $a_i$ 和 $b_j$ 不变的条件下，$n_{ij}$ 服从超几何分布 $n_{ij} \sim \text{Hypergeom}(n, a_i, b_j)$。由超几何分布的二阶矩性质可得：
+\[
+\E[\text{MI}] = \sum_{i=1}^{r} \sum_{j=1}^{c} \sum_{n_{ij} = \max(0, a_i+b_j-n)}^{\min(a_i, b_j)} \frac{n_{ij}}{n} \log_2 \frac{n_{ij} \cdot n}{a_i \cdot b_j} \cdot \frac{\binom{a_i}{n_{ij}}\binom{n-a_i}{b_j-n_{ij}}}{\binom{n}{b_j}}
+\tag{13}
+\]
+
+式~13 的计算量随 $n$ 增长较快，实际实现中采用 Vinh 等人\cite{vinh2009} 提供的封闭形式近似。
 
 \subsection{结果}
 
@@ -105,6 +259,48 @@ bert-large-uncased & encoder & 0.024 & 0.130\\
 
 \section{RQ3：压缩-意义权衡}
 
+\subsection{信息瓶颈框架下的推导}
+
+本报告施加一个重要简化：将瓶颈变量 $T$ 限定为 $k$-means 聚类结果 $C_k$（其中下标 $k$ 表示聚类数）。此时，输入 $X$ 为静态嵌入，目标 $Y$ 为人类类别标签。
+
+\textbf{压缩项} $I(X; C_k)$ 的计算：对于 $k$-means 聚类，$C_k$ 是 $X$ 的\textbf{确定性函数}（每个点被分配到唯一簇），因此 $p(c \mid x) \in \{0,1\}$。由互信息的定义：
+\[
+I(X; C_k) = H(C_k) - H(C_k \mid X) = H(C_k)
+\tag{14}
+\]
+因为 $H(C_k \mid X) = 0$（给定 $X$ 后 $C_k$ 完全确定）。$H(C_k)$ 取决于聚类结果的大小分布。若 $k$ 个簇大小均衡（各为 $n/k$），则 $H(C_k) = \log_2 k$；若分布不均匀，$H(C_k)$ 略小于 $\log_2 k$。因此，\textbf{压缩项随 $k$ 对数增长}：每增加一倍的簇数，约需多 1 比特的信息来描述。
+
+\textbf{意义项} $I(C_k; Y)$ 衡量聚类结果与人类标签的匹配程度。$I(C_k; Y)$ 越大，说明聚类保留了越多的分类信息。但 $I(C_k; Y)$ 难以直接估计，因为 $p(c,y)$ 的估计需要大量样本。
+
+\textbf{替代方案——失真项}：原论文使用\textbf{均方失真}作为意义项的代理：
+\[
+D(k) = \frac{1}{n}\sum_{c} \sum_{x \in c} \|x - \mu_c\|^2
+\tag{15}
+\]
+其中 $\mu_c$ 是簇 $c$ 的质心。在信息论框架下，$D(k)$ 与 $I(C_k; Y)$ 的关系可以通过\textbf{率失真理论}（Rate-Distortion Theory）来理解。
+
+\textbf{率失真理论}告诉我们，给定失真度量 $d(x,\hat{x})$，最小的互信息（率）$R$ 满足平均失真 $\E[d] \leq D$：
+\[
+R(D) = \min_{p(\hat{x} \mid x): \E[d] \leq D} I(X; \hat{X})
+\tag{16}
+\]
+
+在本问题中，$\hat{X}$ 是 $C_k$ 的质心表示（即聚类重构），失真度量 $d(x, \mu_c) = \|x - \mu_c\|^2$。率失真函数 $R(D)$ 是一个凸递减函数：要降低失真 $D$，必须以增加率 $R$（即更精细的聚类）为代价。$k$-means 恰好是率失真函数的一种实际近似求解——它在给定 $k$（等价于给定率 $R \approx \log_2 k$）的条件下最小化失真。
+
+\textbf{复合目标：}
+\[
+\mathcal{L}(k) = \underbrace{I(X; C_k)}_{\text{复杂度/率}} + \beta \cdot \underbrace{D(k)}_{\text{失真}}
+\tag{17}
+\]
+
+这正是 IB 目标（式~9）的\textbf{对偶形式}。在 IB 框架中，拉格朗日函数 $\mathcal{L}_{\text{IB}} = I(X;T) - \beta I(T;Y)$ 寻求压缩和意义的最佳折衷。由于 $I(C_k;Y)$ 的估计困难，原论文用 $D(k)$ 代替 $-I(C_k;Y)$（注意负号：最大化意义等价于最小化失真），得到：
+\[
+\mathcal{L}(k) \approx I(X; C_k) + \beta D(k)
+\]
+其中 $\beta$ 将原 IB 中的拉格朗日乘子重新缩放为失真项的权重。我们固定 $\beta = 1.0$，此时 $\mathcal{L}(k)$ 随 $k$ 变化的形状由数据的几何结构和聚类的率失真特性共同决定。
+
+\textbf{为什么 $k=18$ 是自然的拐点？} 由率失真理论，$R(D)$ 曲线上的每个点对应一个 Pareto 最优的压缩-失真折衷。当 $k$ 很小时（$k < 5$），增加一个簇能大幅降低失真（$D(k)$ 快速下降）；当 $k$ 很大时（$k > 30$），增加簇的边际失真改善趋近于零。人类选择的 $k=18$ 恰好落在这个\textbf{边际收益递减}的过渡区域。从信息论的角度，这个拐点对应率失真函数 $R(D)$ 的\textbf{斜率} $-\frac{dR}{dD}$ 开始快速增加的区域——即再增加率（更多的簇）只能换来极少的失真改善。
+
 \subsection{直观理解}
 
 信息瓶颈原理认为，一个好的表示应该在\textbf{压缩}（减少信息量）和\textbf{意义保持}（保留对下游任务有用的信息）之间取得平衡。用聚类来理解：
@@ -119,9 +315,8 @@ $\mathcal{L}$ 量化了这个权衡：
 \[
 \mathcal{L}(k) = \underbrace{I(X;C)}_{\text{复杂度}} + \beta \cdot \underbrace{D(k)}_{\text{失真}}
 \]
-其中 $I(X;C)$ 是互信息项（测量聚类结果 $C$ 对原始数据 $X$ 的描述复杂度），$D(k) = \frac{1}{n}\sum_{c}\|x_c - \mu_c\|^2$ 是均方失真（测量每个点距离其聚类中心的平均距离），$\beta=1.0$ 控制两者的相对权重。
 
-直观上：左边第一项 $I(X;C)$ 正比于 $\log_2 k$（更多簇需要更多信息来描述），第二项 $D(k)$ 随 $k$ 增大而减小（更多簇使每个簇内部更紧凑）。$\mathcal{L}$ 曲线呈 U 形还是单调递减，取决于数据的几何结构。在我们的数据中，$\mathcal{L}(k)$ 整体随 $k$ 单调递减但斜率逐渐变缓——说明增加簇数带来的边际收益递减。人类的 $k=18$ 恰好落在这个\"收益递减\"的区域。
+直观上：左边第一项 $I(X;C)$ 正比于 $\log_2 k$（更多簇需要更多信息来描述），第二项 $D(k)$ 随 $k$ 增大而减小（更多簇使每个簇内部更紧凑）。$\mathcal{L}$ 曲线呈 U 形还是单调递减，取决于数据的几何结构。在我们的数据中，$\mathcal{L}(k)$ 整体随 $k$ 单调递减但斜率逐渐变缓——说明增加簇数带来的边际收益递减。人类的 $k=18$ 恰好落在这个"收益递减"的区域。
 
 \subsection{方法}
 
@@ -235,9 +430,9 @@ DeepSeek-R1-D-32B & 32B & 4.21\\
 
 \textbf{发现 1（LLM 嵌入同质性）：} 22 个 Transformer 模型的 $\mathcal{L}$ 值集中在 $[4.15, 4.55]$——跨度仅 0.40。模型大小（0.5B $\to$ 32B）、架构（encoder $\to$ decoder）、家族（Qwen $\to$ GPT $\to$ Gemma $\to$ DeepSeek）、训练数据量对 $\mathcal{L}$ 的影响在测量误差水平以下。\textbf{所有 LLM 的静态嵌入在压缩-意义框架下几乎是等价的。}
 
-\textbf{发现 2（经典嵌入完全不同）：} word2vec（$\mathcal{L}=12.13$）和 GloVe（37.93）高出 3 到 9 倍。直观解释：word2vec 的嵌入是 50 维的标准化词向量，每个词只有一个向量；LLM 的静态嵌入是 768-7168 维的上下文平均，每个词在不同句子中不同但被平均到同一个向量。后者的语义区分度更高但也更\"平滑\"，导致 $\mathcal{L}$ 更低。
+\textbf{发现 2（经典嵌入完全不同）：} word2vec（$\mathcal{L}=12.13$）和 GloVe（37.93）高出 3 到 9 倍。直观解释：word2vec 的嵌入是 50 维的标准化词向量，每个词只有一个向量；LLM 的静态嵌入是 768-7168 维的上下文平均，每个词在不同句子中不同但被平均到同一个向量。后者的语义区分度更高但也更"平滑"，导致 $\mathcal{L}$ 更低。
 
-\textbf{发现 3（人类的 $k=18$ 在规律性区域）：} 虽然 $k=18$ 并非严格的数学拐点，但它恰好位于所有 LLM 的 $\mathcal{L}$ 曲线从\"快速下降\"过渡到\"缓慢下降\"的区域。在这个区域，增加聚类数的边际收益开始急剧递减——人类选择的类别数正好是这个过渡区间的典型值。
+\textbf{发现 3（人类的 $k=18$ 在规律性区域）：} 虽然 $k=18$ 并非严格的数学拐点，但它恰好位于所有 LLM 的 $\mathcal{L}$ 曲线从"快速下降"过渡到"缓慢下降"的区域。在这个区域，增加聚类数的边际收益开始急剧递减——人类选择的类别数正好是这个过渡区间的典型值。
 
 \section{RQ1 与 RQ3 交叉分析}
 
@@ -284,10 +479,20 @@ LLM $\mathcal{L}$ 收敛 & $\mathcal{L}$ 仅在一个很窄范围内变化 & \te
   \item \textbf{$n_{\text{init}}=100$ vs $n_{\text{init}}=10$：} 提高 $n_{\text{init}}$ 仅轻微改善结果（高度数集上提升 $<0.01$ AMI），说明论文的 $n_{\text{init}}=10$ 足够稳定。
   \item \textbf{缺少 16 个模型：} 论文使用了 40+ 个模型，我们只能复现其中 24 个（缺少 Llama、Mistral、CLIP 等）。不过由于 LLM 的 $\mathcal{L}$ 高度收敛，预计缺失模型不会改变定性结论。
   \item \textbf{$\mathcal{L}$ 对 $\beta$ 敏感：} 我们固定 $\beta=1.0$。$\beta$ 的不同取值会改变 $\mathcal{L}$ 的绝对数值，但跨模型的相对排序应保持稳定。
+  \item \textbf{信息论假设的简化：} 我们将 $I(X;C)$ 近似为 $\log_2 k$，并直接用 $D(k)$ 替代 IB 中的 $-I(C_k;Y)$。更严格的做法是使用 Blahut-Arimoto 算法直接计算率失真函数。但由于 $k$-means 是率失真求解的一种实际近似，且我们的主要目的是跨模型比较，这些简化是合理的。
+  \item \textbf{数据处理不等式的补充：} 根据 DPI（式~8），$I(X;Y) \geq I(C_k;Y)$。因此，聚类结果与人类标签的互信息不可能超过原始数据与标签的互信息。这为我们解释为什么 LLM 的 AMI 普遍较低提供了另一个视角：如果原始嵌入 $X$ 本身含有的类标签信息本就有限（由于句法和语用噪声），那么进一步的聚类只能保持或减少这些信息。
 \end{enumerate}
 
-\begin{thebibliography}{1}
+\begin{thebibliography}{9}
 \bibitem{shani2025} Shani, L., et al. (2025). From Tokens to Thoughts: How LLMs and Humans Trade Compression for Meaning. \textit{arXiv:2505.17117}.
+
+\bibitem{tishby2000} Tishby, N., Pereira, F. C., \& Bialek, W. (2000). The Information Bottleneck Method. \textit{arXiv:physics/0004057}.
+
+\bibitem{slonim2000} Slonim, N., \& Tishby, N. (2000). Document clustering using word clusters via the Information Bottleneck method. \textit{SIGIR 2000}.
+
+\bibitem{vinh2009} Vinh, N. X., Epps, J., \& Bailey, J. (2009). Information Theoretic Measures for Clusterings Comparison: Variants, Properties, Normalization and Correction for Chance. \textit{JMLR}.
+
+\bibitem{cover2006} Cover, T. M., \& Thomas, J. A. (2006). \textit{Elements of Information Theory} (2nd ed.). Wiley-Interscience.
 \end{thebibliography}
 
 \end{document}

@@ -147,8 +147,60 @@ cosine(E(item), E(category_name)) → Spearman ρ vs human_typicality
 | `utils.py` | 🧑A🧑C | ℒ计算 / k-means / AMI / Spearman — analysis.py 调用的工具箱 |
 | `requirements.txt` | 🧑🧑🧑 | `pip install -r requirements.txt` — 一次性装依赖 |
 | `pipeline.html` | 🧑🧑🧑 | 可视化管线图，浏览器打开 |
+| `report.tex` | 🧑A | LaTeX 复现报告源码（xelatex+ctex，14页），含信息论推导 |
+| `report.pdf` | 🧑🧑🧑 | [已编译 PDF](https://so-for-what.github.io/tokens-to-thoughts-reproduce/report.pdf)，GitHub Pages 自动发布 |
 | `sbatch/extract.sbatch` | 🧑A | 学校平台提交脚本（5 个中大型模型） |
 | `sbatch/extract-large.sbatch` | 🧑A | 学校平台提交脚本（70B/72B 模型） |
+
+### `models_embeddings/` — 提取的嵌入文件
+
+每个模型产出 3 个文件：
+- `{model}.npy` — 上下文嵌入（平均池化最后一层）
+- `{model}_static.npy` — 静态嵌入（无上下文，单 token）
+- `{model}_metadata.json` — 模型配置（嵌入维度、层数、参数量）
+
+| 模型 | 类型 | 嵌入维度 | 文件大小 |
+|:----|:----|:-------:|:-------:|
+| word2vec | classic | 300 | 1.1 MB |
+| glove | classic | 300 | 1.1 MB |
+| bert-base-uncased | encoder | 768 | 4.3 MB |
+| bert-large-uncased | encoder | 1024 | 5.7 MB |
+| roberta-large | encoder | 1024 | 5.7 MB |
+| deberta-large | encoder | 1024 | 5.7 MB |
+| gpt2 | decoder | 768 | 4.3 MB |
+| gpt2-medium | decoder | 1024 | 5.7 MB |
+| Qwen2-0.5B | decoder | 1024 | 3.8 MB |
+| Qwen2.5-0.5B | decoder | 1024 | 3.8 MB |
+| Qwen1.5-0.5B | decoder | 1024 | 4.3 MB |
+| Qwen2-1.5B | decoder | 1536 | 6.5 MB |
+| Qwen2.5-1.5B | decoder | 1536 | 6.5 MB |
+| Qwen1.5-4B | decoder | 2560 | 10.8 MB |
+| Qwen2-7B | decoder | 3584 | 15.1 MB |
+| Qwen2.5-14B | decoder | 5120 | 21.6 MB |
+| Qwen2.5-32B | decoder | 5120 | 21.6 MB |
+| gemma-2-2b | decoder | 2304 | 9.7 MB |
+| gemma-2-9b | decoder | 3584 | 15.1 MB |
+| phi-1 | decoder | 2048 | 8.6 MB |
+| phi-2 | decoder | 2560 | 10.8 MB |
+| DeepSeek-R1-Distill-Qwen-7B | decoder | 3584 | 15.1 MB |
+| DeepSeek-R1-Distill-Qwen-14B | decoder | 5120 | 21.6 MB |
+| DeepSeek-R1-Distill-Qwen-32B | decoder | 5120 | 21.6 MB |
+
+### `results/` — 分析结果
+
+| 文件 | 内容 |
+|:-----|:-----|
+| `rq1_n100_results.csv` | RQ1 完整结果表：24 个模型 × 3 个数据集 × static/ctx 的 AMI/NMI |
+| `rq1_n100_combined.png` | RQ1 全部 24 个模型 AMI 对比柱状图（报告中图1） |
+| `rq1_n100_static.png` | RQ1 静态嵌入 AMI 单独出图 |
+| `rq1_n100_ctx.png` | RQ1 上下文嵌入 AMI 单独出图 |
+| `rq2_results.csv` | RQ2 Spearman ρ 完整结果表 |
+| `rq2_spearman_bar.png` | RQ2 Spearman ρ 柱状图 |
+| `rq2_by_dataset.png` | RQ2 按数据集的典型性相关性分析 |
+| `rq3_summary.csv` | RQ3 ℒ 值汇总（所有模型在 k=18 处） |
+| `rq3_L_curve.png` | RQ3 ℒ 曲线叠加图（报告中图2） |
+| `rq3_curves.png` | RQ3 分格 ℒ 曲线（24 个子图，报告中图3） |
+| `summary_fast.csv` | 快速汇总表（模型参数表、嵌入维度、关键指标） |
 
 |---
 
